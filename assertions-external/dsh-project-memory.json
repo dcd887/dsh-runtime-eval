@@ -1,0 +1,64 @@
+{
+  "plugin": "dsh-project-memory",
+  "origin": "third-party",
+  "pluginDir": "@ext/_git_dsh-project-memory",
+  "repo": "https://github.com/00080000/dsh-project-memory",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "note": "第三方插件（非本机自研），走「临时安装 → 测 → 删」流程，不进 eval:all，结果写到 out-external 不混主榜单。运行需带 --plugin 指向临时安装目录：npm run eval:ext。断言只覆盖只读工具与参数校验，不碰会写 store 的 index_doc / remember / save_lesson / forget / watch_repo。llm 未提供，query_memory 因此在 expandQuery 处降级（返回原 query）——第 5 条断言的正是这条降级路径不会崩。",
+  "assertions": [
+    {
+      "id": "memory-stats-readable",
+      "task": "memory_stats 应返回存储概况文本",
+      "call": { "fn": "memory_stats", "args": {} },
+      "expect": { "jsonPath": "$", "containsAll": ["Files indexed", "Entries"] }
+    },
+    {
+      "id": "list-tasks-empty",
+      "task": "空 store 下 list_tasks 应提示任务记录为 0 套而不是报错",
+      "call": { "fn": "list_tasks", "args": {} },
+      "expect": { "jsonPath": "$", "containsAll": ["任务记录"] }
+    },
+    {
+      "id": "show-task-panel-ok",
+      "task": "show_task_panel 应返回「已请求打开任务面板」",
+      "call": { "fn": "show_task_panel", "args": {} },
+      "expect": { "jsonPath": "$", "containsAll": ["任务面板"] }
+    },
+    {
+      "id": "query-memory-requires-query",
+      "task": "query_memory 缺 query 应抛参数错误",
+      "call": { "fn": "query_memory", "args": {} },
+      "expect": { "isError": true }
+    },
+    {
+      "id": "query-memory-degrades-without-llm",
+      "task": "无 llm 时 query_memory 应走降级（返回无匹配提示）而不是崩溃",
+      "call": { "fn": "query_memory", "args": { "query": "zzz-no-such-thing-xyz" } },
+      "expect": { "jsonPath": "$", "containsAll": ["No memory matches"] }
+    },
+    {
+      "id": "remember-requires-params",
+      "task": "remember 缺 problem/solution 应抛参数错误",
+      "call": { "fn": "remember", "args": {} },
+      "expect": { "isError": true }
+    },
+    {
+      "id": "forget-requires-target",
+      "task": "forget 缺 id_or_query 应抛参数错误",
+      "call": { "fn": "forget", "args": {} },
+      "expect": { "isError": true }
+    },
+    {
+      "id": "memory-stats-is-text",
+      "task": "memory_stats 返回值应是足够长的文本（不是空串）",
+      "call": { "fn": "memory_stats", "args": {} },
+      "expect": { "jsonPath": "$", "lengthAtLeast": 30 }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：memory_stats 期望含一个不可能出现的串",
+      "call": { "fn": "memory_stats", "args": {} },
+      "expect": { "jsonPath": "$", "containsAll": ["Files indexed: 999999999"] }
+    }
+  ]
+}

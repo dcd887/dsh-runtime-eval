@@ -1,0 +1,174 @@
+{
+  "plugin": "dsh-doc-read",
+  "origin": "self",
+  "pluginDir": "@local/dsh-doc-read3",
+  "repo": "https://github.com/dcd887/dsh-doc-read",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "assertions": [
+    {
+      "id": "outline-page-count",
+      "task": "2 页 PDF 的 doc_outline 应返回 pages=2",
+      "call": {
+        "fn": "doc_outline",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.pdf"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.pages",
+        "equals": 2
+      }
+    },
+    {
+      "id": "outline-kind-pdf",
+      "task": "kind 应为 pdf",
+      "call": {
+        "fn": "doc_outline",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.pdf"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.kind",
+        "equals": "pdf"
+      }
+    },
+    {
+      "id": "outline-two-pages",
+      "task": "outline 数组应有 2 项",
+      "call": {
+        "fn": "doc_outline",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.pdf"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.outline",
+        "lengthAtLeast": 2
+      }
+    },
+    {
+      "id": "outline-first-page-head",
+      "task": "第 1 页的 head 应提到 page one",
+      "call": {
+        "fn": "doc_outline",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.pdf"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.outline[0].head",
+        "containsAll": [
+          "page one"
+        ]
+      }
+    },
+    {
+      "id": "outline-missing-file-errors",
+      "task": "文件不存在时应抛错",
+      "call": {
+        "fn": "doc_outline",
+        "args": {
+          "path": "C:/nope/missing.pdf"
+        }
+      },
+      "expect": {
+        "isError": true
+      }
+    },
+    {
+      "id": "read-range-1-1",
+      "task": "读第 1 页，range 应为 1-1，returned 应为 1",
+      "call": {
+        "fn": "doc_read",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.pdf",
+          "from": 1,
+          "to": 1
+        }
+      },
+      "expect": {
+        "jsonPath": "$.range",
+        "equals": "1-1"
+      }
+    },
+    {
+      "id": "read-body-length",
+      "task": "读第 1 页时 body 应只有 1 项",
+      "call": {
+        "fn": "doc_read",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.pdf",
+          "from": 1,
+          "to": 1
+        }
+      },
+      "expect": {
+        "jsonPath": "$.body",
+        "lengthAtLeast": 1
+      }
+    },
+    {
+      "id": "read-body-text-contains-keyword",
+      "task": "第 1 页正文应包含 fixture-alpha",
+      "call": {
+        "fn": "doc_read",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.pdf",
+          "from": 1,
+          "to": 1
+        }
+      },
+      "expect": {
+        "jsonPath": "$.body[0].text",
+        "containsAll": [
+          "fixture-alpha"
+        ]
+      }
+    },
+    {
+      "id": "grep-hits-fixture",
+      "task": "搜 fixture 应有命中",
+      "call": {
+        "fn": "doc_grep",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.pdf",
+          "pattern": "fixture"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.hitCount",
+        "atLeast": 1
+      }
+    },
+    {
+      "id": "grep-no-hits",
+      "task": "搜绝对不存在的词应为 0 命中",
+      "call": {
+        "fn": "doc_grep",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.pdf",
+          "pattern": "zzz-not-in-this-document-zzz"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.hitCount",
+        "equals": 0
+      }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：期望 pages=999，实际 2",
+      "call": {
+        "fn": "doc_outline",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.pdf"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.pages",
+        "equals": 999
+      }
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "plugin": "dsh-mcpack",
+  "origin": "self",
+  "pluginDir": "@local/dsh-mcpack",
+  "repo": "https://github.com/dcd887/dsh-mcpack",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "assertions": [
+    {
+      "id": "list-ok",
+      "task": "列表应返回 ok=true",
+      "call": {
+        "fn": "mcpack_list",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.ok",
+        "equals": true
+      }
+    },
+    {
+      "id": "list-instance-count",
+      "task": "应有 13 个实例目录",
+      "call": {
+        "fn": "mcpack_list",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.instance_count",
+        "equals": 13
+      }
+    },
+    {
+      "id": "list-valid-count",
+      "task": "应有 12 个有效实例",
+      "call": {
+        "fn": "mcpack_list",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.valid_count",
+        "equals": 12
+      }
+    },
+    {
+      "id": "list-instances-nonempty",
+      "task": "instances 数组不应为空",
+      "call": {
+        "fn": "mcpack_list",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.instances",
+        "lengthAtLeast": 1
+      }
+    },
+    {
+      "id": "list-first-has-mc-version",
+      "task": "第一个实例应有 mc_version",
+      "call": {
+        "fn": "mcpack_list",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.instances[0].mc_version",
+        "lengthAtLeast": 1
+      }
+    },
+    {
+      "id": "list-first-has-loader",
+      "task": "第一个实例应有 loader",
+      "call": {
+        "fn": "mcpack_list",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.instances[0].loader",
+        "lengthAtLeast": 1
+      }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败",
+      "call": {
+        "fn": "mcpack_list",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.instance_count",
+        "equals": -1
+      }
+    }
+  ]
+}

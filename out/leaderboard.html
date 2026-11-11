@@ -1,0 +1,1148 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>dsh-runtime-eval · 行为级榜单</title>
+<style>
+:root{
+  --ink:#16181d; --dim:#6b7280; --line:#e5e7eb; --bg:#fcfcfb;
+  --ok:#0b6b3a; --bad:#b42318; --self:#8a6d3b; --accent:#1d4ed8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 24px 72px}
+header h1{font-size:26px;margin:0 0 4px;letter-spacing:-.01em}
+header p{margin:0;color:var(--dim)}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border:1px solid var(--line);
+  border-radius:999px;color:var(--dim);margin-left:8px;vertical-align:2px}
+.hero{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 8px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card .k{font-size:12px;color:var(--dim);margin-bottom:6px}
+.card .v{font-size:24px;font-weight:650;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.card .s{font-size:12px;color:var(--dim);margin-top:2px}
+.big{color:var(--ok)}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);
+  border-radius:10px;overflow:hidden}
+thead th{text-align:left;font-size:12px;font-weight:600;color:var(--dim);
+  background:#f9fafb;padding:9px 12px;border-bottom:1px solid var(--line)}
+tbody td{padding:10px 12px;border-bottom:1px solid #f1f3f5;vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ok{color:var(--ok);font-weight:650}
+.bad{color:var(--bad);font-weight:650}
+.na{color:var(--dim)}
+.plugin{font-weight:600}
+.src{font-size:12px;white-space:nowrap;color:var(--dim)}
+.src-self{color:var(--dim)}
+.src-third{color:var(--ok);font-weight:600}
+.src-mock{color:var(--self)}
+.mono{font-family:ui-monospace,Consolas,"Courier New",monospace;font-size:13px}
+.dim{color:var(--dim)}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+tr.expand td{padding:0 12px 12px;border-bottom:1px solid #f1f3f5}
+details summary{cursor:pointer;font-size:13px;color:var(--dim);padding:2px 0 6px;user-select:none}
+details summary:hover{color:var(--ink)}
+table.detail{border:1px solid #eef0f2;border-radius:8px;margin-top:4px}
+table.detail thead th{background:#fafbfc;font-size:11px;padding:6px 10px}
+table.detail tbody td{padding:6px 10px;font-size:13px}
+tr.self td{background:#fdfbf4}
+tr.self .mark{color:var(--self);font-weight:600}
+tr.pass .mark{color:var(--ok)}
+tr.fail .mark{color:var(--bad);font-weight:600}
+tr.fail td{background:#fef3f2}
+.mark{font-size:12px;white-space:nowrap}
+.warn{display:inline-block;background:#fef0c7;color:#93370d;border-radius:4px;
+  font-size:11px;padding:0 5px;margin-left:6px}
+.alert{background:#fef0c7;color:#93370d;border:1px solid #fedf89;border-radius:8px;
+  padding:10px 14px;margin:16px 0;font-size:14px}
+.note{margin-top:28px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.note h2{font-size:15px;margin:0 0 10px}
+.note p{margin:0 0 10px;color:#374151;font-size:14px}
+.note p:last-child{margin-bottom:0}
+.note code{background:#f3f4f6;border-radius:4px;padding:1px 5px;font-size:13px;
+  font-family:ui-monospace,Consolas,monospace}
+footer{margin-top:32px;color:var(--dim);font-size:12.5px;line-height:1.9}
+footer code{font-family:ui-monospace,Consolas,monospace}
+@media(max-width:720px){
+  .hero{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:24px 14px 56px}
+  table{font-size:13px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>dsh-runtime-eval · 行为级榜单<span class="tag">实测</span></h1>
+  <p>官方测「装不装得上」，这里测「用不用得好」——每个插件跑一组真实任务断言，看它做出来的东西对不对。</p>
+</header>
+
+<div class="hero">
+  <div class="card">
+    <div class="k">有效通过</div>
+    <div class="v big">96/96</div>
+    <div class="s">100% · 已剔除自检</div>
+  </div>
+  <div class="card">
+    <div class="k">断言总数</div>
+    <div class="v">109</div>
+    <div class="s">含 13 条自检用例</div>
+  </div>
+  <div class="card">
+    <div class="k">断言集</div>
+    <div class="v">13</div>
+    <div class="s">8 自研 · 4 第三方 · 1 mock</div>
+  </div>
+  <div class="card">
+    <div class="k">原始通过率</div>
+    <div class="v">88.1%</div>
+    <div class="s">96/109，含自检用例</div>
+  </div>
+</div>
+
+
+
+<table>
+  <thead>
+    <tr>
+      <th>插件</th>
+      <th>来源</th>
+      <th class="num">有效断言</th>
+      <th class="num">有效通过率</th>
+      <th class="num">原始</th>
+      <th class="num">原始率</th>
+      <th class="num">中位耗时</th>
+      <th>仓库</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+      <td class="plugin">project-dashboard</td>
+      <td class="src src-self">自研</td>
+      <td class="num">12/12</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">12/13</td>
+      <td class="num dim">92.3%</td>
+      <td class="num dim">1</td>
+      <td class="repo"><span class="dim">—</span></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 12 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">schema-version-1</td>
+        <td>payload 的 schemaVersion 应为 1</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">20</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">generated-at-iso</td>
+        <td>generatedAt 应是 ISO 8601 时间戳</td>
+        <td class="mono dim">matches /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/: ok</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">datafile-points-to-data-json</td>
+        <td>dataFile 应指向 data.json</td>
+        <td class="mono dim">matches /data\.json$/: ok</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">dataset-schema-version</td>
+        <td>读到的 data.json 应含 schemaVersion=1</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">dataset-has-groups</td>
+        <td>数据集里应有至少 1 个分组</td>
+        <td class="mono dim">length 8 &gt;= 1: ok</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">no-top-level-error</td>
+        <td>数据集读取成功时不应带 error 字段</td>
+        <td class="mono dim">empty: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">github-status-ok</td>
+        <td>有 fixture 时 GitHub 快照应抓取成功（status=ok）</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">github-total-2</td>
+        <td>应汇总出 2 个仓库</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">github-sorted-by-pushed-at</td>
+        <td>列表应按 pushed_at 降序，最新的 beta 排第一</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">github-public-count-2</td>
+        <td>两个都是 public，publicCount 应为 2</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">github-per-page-stopped</td>
+        <td>2 条少于 perPage=10，分页应只请求 1 页</td>
+        <td class="mono dim">length 1 &gt;= 1: ok</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">atomgit-degrades-not-crashes</td>
+        <td>无 AtomGit fixture 时应降级为 unavailable 而不是抛错</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败：schemaVersion 期望 999</td>
+        <td class="mono dim">equals: 1 !== 999</td>
+        <td class="num">0</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-doc-read</td>
+      <td class="src src-self">自研</td>
+      <td class="num">10/10</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">10/11</td>
+      <td class="num dim">90.9%</td>
+      <td class="num dim">4</td>
+      <td class="repo"><a href="https://github.com/dcd887/dsh-doc-read" target="_blank" rel="noreferrer">dcd887/dsh-doc-read</a></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 10 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">outline-page-count</td>
+        <td>2 页 PDF 的 doc_outline 应返回 pages=2</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">516</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">outline-kind-pdf</td>
+        <td>kind 应为 pdf</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">6</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">outline-two-pages</td>
+        <td>outline 数组应有 2 项</td>
+        <td class="mono dim">length 2 &gt;= 2: ok</td>
+        <td class="num">5</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">outline-first-page-head</td>
+        <td>第 1 页的 head 应提到 page one</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">4</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">outline-missing-file-errors</td>
+        <td>文件不存在时应抛错</td>
+        <td class="mono dim">threw as expected: 文件不存在: C:/nope/missing.pdf</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-range-1-1</td>
+        <td>读第 1 页，range 应为 1-1，returned 应为 1</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">5</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-body-length</td>
+        <td>读第 1 页时 body 应只有 1 项</td>
+        <td class="mono dim">length 1 &gt;= 1: ok</td>
+        <td class="num">4</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-body-text-contains-keyword</td>
+        <td>第 1 页正文应包含 fixture-alpha</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">3</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">grep-hits-fixture</td>
+        <td>搜 fixture 应有命中</td>
+        <td class="mono dim">4 &gt;= 1: ok</td>
+        <td class="num">5</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">grep-no-hits</td>
+        <td>搜绝对不存在的词应为 0 命中</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">4</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败：期望 pages=999，实际 2</td>
+        <td class="mono dim">equals: 2 !== 999</td>
+        <td class="num">4</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-brief-pack</td>
+      <td class="src src-self">自研</td>
+      <td class="num">9/9</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">9/10</td>
+      <td class="num dim">90%</td>
+      <td class="num dim">3</td>
+      <td class="repo"><a href="https://github.com/dcd887/dsh-brief-pack" target="_blank" rel="noreferrer">dcd887/dsh-brief-pack</a></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 9 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">pack-files-count</td>
+        <td>传 1 个文件，filesPacked 应有 1 项</td>
+        <td class="mono dim">length 1 &gt;= 1: ok</td>
+        <td class="num">8</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">pack-token-under-budget</td>
+        <td>生成的包不应超过预算（含 20% 估算余量）</td>
+        <td class="mono dim">1038 &lt;= 2400: ok</td>
+        <td class="num">2</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">pack-budget-echoed</td>
+        <td>budgetTokens 应原样回显</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">4</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">pack-has-brief-path</td>
+        <td>应返回 briefPath</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">3</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">pack-no-truncation-small-file</td>
+        <td>6 KB 文件在 8000 预算下不应截断</td>
+        <td class="mono dim">empty: ok</td>
+        <td class="num">3</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">pack-matched-terms-nonempty</td>
+        <td>有 hint 时应记录命中的关键词</td>
+        <td class="mono dim">length 1 &gt;= 1: ok</td>
+        <td class="num">3</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">pack-token-note-present</td>
+        <td>应标注 token 是估算值</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">3</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">pack-hint-method-recorded</td>
+        <td>有 hint 时 method 应为 hint</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">3</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">pack-missing-file-marked-missing</td>
+        <td>文件不存在时不抛错，而是在 filesPacked[0].kind 标 missing</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">2</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败：期望 approxTokens=99999</td>
+        <td class="mono dim">equals: 1384 !== 99999</td>
+        <td class="num">2</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-mail-reader</td>
+      <td class="src src-self">自研</td>
+      <td class="num">9/9</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">9/10</td>
+      <td class="num dim">90%</td>
+      <td class="num dim">716</td>
+      <td class="repo"><span class="dim">—</span></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 9 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">probe-ok</td>
+        <td>mail_probe 应连通并返回 ok=true</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">867</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">probe-port-993</td>
+        <td>网易 IMAP 端口应为 993</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">2755</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">probe-readonly</td>
+        <td>应是只读模式（readonly=true）</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">715</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">list-ok</td>
+        <td>mail_list 应返回 ok=true</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">880</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">list-days-clamped-to-365</td>
+        <td>days=9999 应被 clamp 到上限 365</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">731</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-without-keyword-errors</td>
+        <td>mail_search 无关键词应直接抛错（不发 IMAP 请求）</td>
+        <td class="mono dim">threw as expected: mail_search needs &quot;subject&quot; and/or &quot;from&quot;.</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-nonnumeric-uid-errors</td>
+        <td>mail_read 的 uid 非数字应抛错</td>
+        <td class="mono dim">threw as expected: mail_read needs a numeric uid from mail_list.</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-missing-uid-errors</td>
+        <td>mail_read 的 uid 不存在应抛错</td>
+        <td class="mono dim">threw as expected: no header data returned for uid 999999999</td>
+        <td class="num">716</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-nonsense-zero</td>
+        <td>搜绝对不存在的主题应为 0 封</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">690</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败：uid 非数字本应抛错，这里却期望 ok=true</td>
+        <td class="mono dim">unexpected error: mail_read needs a numeric uid from mail_list.</td>
+        <td class="num">0</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">mock-doc-read</td>
+      <td class="src src-mock">mock</td>
+      <td class="num">9/9</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">9/10</td>
+      <td class="num dim">90%</td>
+      <td class="num dim">0</td>
+      <td class="repo"><span class="dim" title="本地 fixture，不发布">本地 mock</span></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 9 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">outline-page-count</td>
+        <td>12 页 PDF 的 doc_outline 应返回 12 页</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">outline-returns-title</td>
+        <td>doc_outline 应返回 title 字段</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">outline-missing-file-errors</td>
+        <td>文件不存在时应抛错</td>
+        <td class="mono dim">threw as expected: file not found: fixtures/missing.pdf</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-page-range</td>
+        <td>读第 3-5 页，应只返回 3 页内容</td>
+        <td class="mono dim">containsAll: ok; containsNone: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-single-page</td>
+        <td>只读第 1 页，应只有第 1 页</td>
+        <td class="mono dim">containsAll: ok; containsNone: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-out-of-range-clamped</td>
+        <td>读第 11-99 页，应只返回 11、12 两页（不抛错）</td>
+        <td class="mono dim">containsAll: ok; containsNone: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-invalid-from-errors</td>
+        <td>from &lt; 1 时应抛错</td>
+        <td class="mono dim">threw as expected: from must be &gt;= 1</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">grep-hits</td>
+        <td>搜存在的词，命中数应 &gt;= 1</td>
+        <td class="mono dim">length 2 &gt;= 1: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">grep-no-hits</td>
+        <td>搜不存在的词，命中数应为 0</td>
+        <td class="mono dim">empty: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败：期望 999，实际 12</td>
+        <td class="mono dim">equals: 12 !== 999</td>
+        <td class="num">0</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-project-memory</td>
+      <td class="src src-third">第三方</td>
+      <td class="num">8/8</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">8/9</td>
+      <td class="num dim">88.9%</td>
+      <td class="num dim">1</td>
+      <td class="repo"><a href="https://github.com/00080000/dsh-project-memory" target="_blank" rel="noreferrer">00080000/dsh-project-memory</a></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 8 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">memory-stats-readable</td>
+        <td>memory_stats 应返回存储概况文本</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">6</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">list-tasks-empty</td>
+        <td>空 store 下 list_tasks 应提示任务记录为 0 套而不是报错</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">2</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">show-task-panel-ok</td>
+        <td>show_task_panel 应返回「已请求打开任务面板」</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">query-memory-requires-query</td>
+        <td>query_memory 缺 query 应抛参数错误</td>
+        <td class="mono dim">threw as expected: invalid arguments: missing required property &quot;query&quot;</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">query-memory-degrades-without-llm</td>
+        <td>无 llm 时 query_memory 应走降级（返回无匹配提示）而不是崩溃</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">12</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">remember-requires-params</td>
+        <td>remember 缺 problem/solution 应抛参数错误</td>
+        <td class="mono dim">threw as expected: invalid arguments: missing required property &quot;problem&quot;; missing required property &quot;solution&quot;</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">forget-requires-target</td>
+        <td>forget 缺 id_or_query 应抛参数错误</td>
+        <td class="mono dim">threw as expected: invalid arguments: missing required property &quot;id_or_query&quot;</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">memory-stats-is-text</td>
+        <td>memory_stats 返回值应是足够长的文本（不是空串）</td>
+        <td class="mono dim">length 250 &gt;= 30: ok</td>
+        <td class="num">1</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败：memory_stats 期望含一个不可能出现的串</td>
+        <td class="mono dim">missing: Files indexed: 999999999</td>
+        <td class="num">1</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-customs-kb-audit</td>
+      <td class="src src-self">自研</td>
+      <td class="num">7/7</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">7/8</td>
+      <td class="num dim">87.5%</td>
+      <td class="num dim">380</td>
+      <td class="repo"><a href="https://github.com/dcd887/dsh-customs-kb-audit" target="_blank" rel="noreferrer">dcd887/dsh-customs-kb-audit</a></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 7 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">audit-total-1956</td>
+        <td>知识库共 1956 条</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">441</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">audit-coverage-official-100</td>
+        <td>官方文号覆盖率应为 100%</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">380</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">audit-has-shape</td>
+        <td>应报告数据结构 shape</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">389</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">audit-rerun-identical</td>
+        <td>两次运行应字节一致</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">393</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">quality-total-match</td>
+        <td>质量审计的总数应和结构审计一致</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">305</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">quality-template-detected</td>
+        <td>应检测到模板化描述</td>
+        <td class="mono dim">72.6 &gt;= 50: ok</td>
+        <td class="num">290</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">quality-has-null-rates</td>
+        <td>应输出 year 字段的空值统计（0 空 / 1956 有）</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">289</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败</td>
+        <td class="mono dim">equals: 1956 !== 99999</td>
+        <td class="num">379</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-ledger-memory</td>
+      <td class="src src-third">第三方</td>
+      <td class="num">7/7</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">7/8</td>
+      <td class="num dim">87.5%</td>
+      <td class="num dim">5</td>
+      <td class="repo"><a href="https://github.com/18477514055/dsh-ledger-memory" target="_blank" rel="noreferrer">18477514055/dsh-ledger-memory</a></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 7 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">status-ok</td>
+        <td>ledger_status 对存在的空目录应返回 ok=true</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">250</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">status-not-initialized</td>
+        <td>空目录应报告 initialized=false</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">220</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-no-ledger</td>
+        <td>没登记过账本时 ledger_read 应 found=false（不是抛错）</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">6</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">read-defaults-to-active</td>
+        <td>ledger_read 缺 target 时默认读 active，不抛错</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">3</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">log-not-enabled</td>
+        <td>未启用活动日志时 ledger_log 应 ok=false 并给出提示</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">4</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">status-requires-root</td>
+        <td>没有 root、也没有会话 cwd 时应抛错</td>
+        <td class="mono dim">threw as expected: project-ledger: 这个执行没有可用的会话工作目录（agent.session.header.cwd），无法定位项目根。若本会话是从容器工作区开的，请用 root 参数点名子项目目录。</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">conform-no-change</td>
+        <td>ledger_conform 不带 apply 时应只检查不改动（changed=false）</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">4</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败：空的 scratch 目录期望已初始化</td>
+        <td class="mono dim">equals: false !== true</td>
+        <td class="num">228</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-record-search</td>
+      <td class="src src-self">自研</td>
+      <td class="num">7/7</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">7/8</td>
+      <td class="num dim">87.5%</td>
+      <td class="num dim">17</td>
+      <td class="repo"><a href="https://github.com/dcd887/dsh-record-search" target="_blank" rel="noreferrer">dcd887/dsh-record-search</a></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 7 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-ok</td>
+        <td>搜索应返回 ok=true</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">425</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-indexed</td>
+        <td>索引应已建立</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">22</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-sessions-matched</td>
+        <td>搜「测试」应命中会话</td>
+        <td class="mono dim">181 &gt;= 1: ok</td>
+        <td class="num">16</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-total-hits</td>
+        <td>命中总数应 &gt;= 1</td>
+        <td class="mono dim">1704 &gt;= 1: ok</td>
+        <td class="num">17</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-index-sessions</td>
+        <td>索引里会话数应 &gt;= 1</td>
+        <td class="mono dim">257 &gt;= 1: ok</td>
+        <td class="num">26</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-took-ms</td>
+        <td>应返回耗时</td>
+        <td class="mono dim">13 &gt;= 0: ok</td>
+        <td class="num">13</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-nonsense-zero</td>
+        <td>搜不存在的词应为 0 命中</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">8</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败</td>
+        <td class="mono dim">equals: 181 !== -1</td>
+        <td class="num">14</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-mcpack</td>
+      <td class="src src-self">自研</td>
+      <td class="num">6/6</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">6/7</td>
+      <td class="num dim">85.7%</td>
+      <td class="num dim">410</td>
+      <td class="repo"><a href="https://github.com/dcd887/dsh-mcpack" target="_blank" rel="noreferrer">dcd887/dsh-mcpack</a></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 6 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">list-ok</td>
+        <td>列表应返回 ok=true</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">662</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">list-instance-count</td>
+        <td>应有 13 个实例目录</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">409</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">list-valid-count</td>
+        <td>应有 12 个有效实例</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">410</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">list-instances-nonempty</td>
+        <td>instances 数组不应为空</td>
+        <td class="mono dim">length 13 &gt;= 1: ok</td>
+        <td class="num">399</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">list-first-has-mc-version</td>
+        <td>第一个实例应有 mc_version</td>
+        <td class="mono dim">length 6 &gt;= 1: ok</td>
+        <td class="num">407</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">list-first-has-loader</td>
+        <td>第一个实例应有 loader</td>
+        <td class="mono dim">length 5 &gt;= 1: ok</td>
+        <td class="num">413</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败</td>
+        <td class="mono dim">equals: 13 !== -1</td>
+        <td class="num">417</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-memory-band</td>
+      <td class="src src-third">第三方</td>
+      <td class="num">5/5</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">5/6</td>
+      <td class="num dim">83.3%</td>
+      <td class="num dim">0</td>
+      <td class="repo"><a href="https://github.com/13576751971/dsh-memory-band" target="_blank" rel="noreferrer">13576751971/dsh-memory-band</a></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 5 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">stats-returns-count</td>
+        <td>action=stats 应返回记忆条数与用量</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">3</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">recall-no-match</td>
+        <td>recall 一个不存在的词应明确说没找到</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">recall-requires-query</td>
+        <td>recall 缺 query 应抛错</td>
+        <td class="mono dim">threw as expected: memory_band: recall 需要 query</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">bad-action-rejected</td>
+        <td>非法 action 应抛错并说明合法取值</td>
+        <td class="mono dim">threw as expected: memory_band: action 只能是 recall / remember / stats</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">missing-action-rejected</td>
+        <td>缺 action 应抛错</td>
+        <td class="mono dim">threw as expected: memory_band: action 只能是 recall / remember / stats</td>
+        <td class="num">0</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败：stats 期望含一个不可能出现的串</td>
+        <td class="mono dim">missing: &lt;DELIBERATE-FAIL: 不该出现&gt;</td>
+        <td class="num">1</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-memory-plugin</td>
+      <td class="src src-third">第三方</td>
+      <td class="num">5/5</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">5/6</td>
+      <td class="num dim">83.3%</td>
+      <td class="num dim">2</td>
+      <td class="repo"><a href="https://github.com/2132774831/dsh-memory-plugin" target="_blank" rel="noreferrer">2132774831/dsh-memory-plugin</a></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 5 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">memory-list-returns-text</td>
+        <td>memory_list 应返回非空文本（空库也要给提示）</td>
+        <td class="mono dim">length 8 &gt;= 1: ok</td>
+        <td class="num">2</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">memory-review-returns-text</td>
+        <td>memory_review 应返回非空体检文本</td>
+        <td class="mono dim">length 16 &gt;= 1: ok</td>
+        <td class="num">10</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-without-query-hints</td>
+        <td>memory_search 缺 query 应返回提示文本而不是抛错</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">3</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">forget-without-id-hints</td>
+        <td>memory_forget 缺 id 应返回提示文本而不是抛错</td>
+        <td class="mono dim">containsAll: ok</td>
+        <td class="num">2</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">search-nonexistent-returns-text</td>
+        <td>搜不存在的词应返回非空文本（无结果也说明清楚）</td>
+        <td class="mono dim">length 38 &gt;= 1: ok</td>
+        <td class="num">2</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败：memory_list 期望含一个不可能出现的串</td>
+        <td class="mono dim">missing: &lt;DELIBERATE-FAIL: 不该出现&gt;</td>
+        <td class="num">1</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+<tr>
+      <td class="plugin">dsh-office-qa</td>
+      <td class="src src-self">自研</td>
+      <td class="num">2/2</td>
+      <td class="num ok">100%</td>
+      <td class="num dim">2/3</td>
+      <td class="num dim">66.7%</td>
+      <td class="num dim">415</td>
+      <td class="repo"><a href="https://github.com/dcd887/dsh-office-qa" target="_blank" rel="noreferrer">dcd887/dsh-office-qa</a></td>
+    </tr>
+    <tr class="expand"><td colspan="8">
+      <details><summary>展开 2 条有效断言 + 1 条自检</summary>
+      <table class="detail">
+    <thead><tr><th style="width:3.2em"></th><th style="width:16em">断言 id</th><th>验证什么</th><th>判据结果</th><th style="width:4em">ms</th></tr></thead>
+    <tbody>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">qa-docx-returns-json</td>
+        <td>对一个真 docx 应识别为 docx 并给出字体摘要</td>
+        <td class="mono dim">equals: ok</td>
+        <td class="num">496</td>
+      </tr>
+<tr class="pass">
+        <td class="mark">通过</td>
+        <td class="mono">qa-missing-file-errors</td>
+        <td>文件不存在时应抛错</td>
+        <td class="mono dim">threw as expected: Command failed: C:\Python314\python.exe C:\Users\kjds\.dsh\dsh-plugin-work\office-qa\office_qa2.py C</td>
+        <td class="num">415</td>
+      </tr>
+<tr class="self">
+        <td class="mark">自检</td>
+        <td class="mono">DELIBERATE-FAIL</td>
+        <td>故意失败</td>
+        <td class="mono dim">empty: no</td>
+        <td class="num">390</td>
+      </tr>
+    </tbody>
+  </table>
+      </details>
+    </td></tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <h2>为什么有两个通过率</h2>
+  <p>每个断言集都含一条 <code>DELIBERATE-FAIL</code>：一条故意写错、必须失败的断言。它的作用是证明判据引擎真的会判失败——否则一个永远返回 <code>true</code> 的评测器也能报告 100%。</p>
+  <p>所以表格里的「有效通过率」剔除这条自检用例，代表插件真实表现；「原始」列是含自检用例的数字，也就是直接跑 <code>npm run eval:all</code> 时终端里看到的那个。两个数字都对，口径不同。</p>
+  <p>若出现非自检的真实失败，会被单独标红并计入「有效通过率」，不并入自检口径。</p>
+</div>
+
+<footer>
+  生成时间：2026-11-11 16:42　·　数据源：<code>out/*.json</code>（13 个结果文件）　·　测试环境：DSH 0.2.1-alpha.2<br>
+  复现：<code>npm run eval:all</code> 然后 <code>npm run leaderboard</code>　·　数字全部由脚本从 JSON 现算，无手填
+</footer>
+</div>
+</body>
+</html>

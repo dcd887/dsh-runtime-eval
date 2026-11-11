@@ -1,0 +1,121 @@
+{
+  "plugin": "dsh-record-search",
+  "origin": "self",
+  "pluginDir": "@local/dsh-record-search",
+  "repo": "https://github.com/dcd887/dsh-record-search",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "assertions": [
+    {
+      "id": "search-ok",
+      "task": "搜索应返回 ok=true",
+      "call": {
+        "fn": "record_search",
+        "args": {
+          "query": "测试"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.ok",
+        "equals": true
+      }
+    },
+    {
+      "id": "search-indexed",
+      "task": "索引应已建立",
+      "call": {
+        "fn": "record_search",
+        "args": {
+          "query": "测试"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.indexed",
+        "equals": true
+      }
+    },
+    {
+      "id": "search-sessions-matched",
+      "task": "搜「测试」应命中会话",
+      "call": {
+        "fn": "record_search",
+        "args": {
+          "query": "测试"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.sessionsMatched",
+        "atLeast": 1
+      }
+    },
+    {
+      "id": "search-total-hits",
+      "task": "命中总数应 >= 1",
+      "call": {
+        "fn": "record_search",
+        "args": {
+          "query": "测试"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.totalHits",
+        "atLeast": 1
+      }
+    },
+    {
+      "id": "search-index-sessions",
+      "task": "索引里会话数应 >= 1",
+      "call": {
+        "fn": "record_search",
+        "args": {
+          "query": "测试"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.index.sessions",
+        "atLeast": 1
+      }
+    },
+    {
+      "id": "search-took-ms",
+      "task": "应返回耗时",
+      "call": {
+        "fn": "record_search",
+        "args": {
+          "query": "测试"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.tookMs",
+        "atLeast": 0
+      }
+    },
+    {
+      "id": "search-nonsense-zero",
+      "task": "搜不存在的词应为 0 命中",
+      "call": {
+        "fn": "record_search",
+        "args": {
+          "query": "zzz-绝对不存在-zzz"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.totalHits",
+        "equals": 0
+      }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败",
+      "call": {
+        "fn": "record_search",
+        "args": {
+          "query": "测试"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.sessionsMatched",
+        "equals": -1
+      }
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "plugin": "project-dashboard",
+  "origin": "self",
+  "pluginDir": "@local/project-dashboard",
+  "repo": "",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "note": "UI 插件仅 1 个工具，返回看板 payload 而不是可断言业务结果。mock.web.fixtures 给 GitHub 发现接口喂了 2 个假仓库（少于 perPage=10，因此分页在一次请求后停止），从而真正走到「分页发现 → slimRepo → 排序 → 汇总」这条真实数据路径，而不是降级路径。AtomGit 没有 fixture，仍走 404 降级，用来验证「外部源不可用时结构完整、不崩溃」。fixture 是假数据，不代表任何真实仓库。",
+  "mock": {
+    "web": {
+      "fixtures": [
+        {
+          "match": "api.github.com/users/",
+          "json": [
+            {
+              "full_name": "fixture-org/alpha",
+              "name": "alpha",
+              "owner": { "login": "fixture-org" },
+              "stargazers_count": 12,
+              "forks_count": 3,
+              "open_issues_count": 1,
+              "language": "JavaScript",
+              "pushed_at": "2026-11-08T10:00:00Z",
+              "updated_at": "2026-11-08T10:00:00Z",
+              "created_at": "2026-01-01T00:00:00Z",
+              "default_branch": "main",
+              "description": "fixture alpha",
+              "html_url": "https://github.com/fixture-org/alpha",
+              "visibility": "public"
+            },
+            {
+              "full_name": "fixture-org/beta",
+              "name": "beta",
+              "owner": { "login": "fixture-org" },
+              "stargazers_count": 40,
+              "forks_count": 9,
+              "open_issues_count": 0,
+              "language": "Python",
+              "pushed_at": "2026-11-11T09:00:00Z",
+              "updated_at": "2026-11-11T09:00:00Z",
+              "created_at": "2026-02-02T00:00:00Z",
+              "default_branch": "main",
+              "description": "fixture beta",
+              "html_url": "https://github.com/fixture-org/beta",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "assertions": [
+    {
+      "id": "schema-version-1",
+      "task": "payload 的 schemaVersion 应为 1",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.schemaVersion", "equals": 1 }
+    },
+    {
+      "id": "generated-at-iso",
+      "task": "generatedAt 应是 ISO 8601 时间戳",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.generatedAt", "matches": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}" }
+    },
+    {
+      "id": "datafile-points-to-data-json",
+      "task": "dataFile 应指向 data.json",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.dataFile", "matches": "data\\.json$" }
+    },
+    {
+      "id": "dataset-schema-version",
+      "task": "读到的 data.json 应含 schemaVersion=1",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.data.schemaVersion", "equals": 1 }
+    },
+    {
+      "id": "dataset-has-groups",
+      "task": "数据集里应有至少 1 个分组",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.data.groups", "lengthAtLeast": 1 }
+    },
+    {
+      "id": "no-top-level-error",
+      "task": "数据集读取成功时不应带 error 字段",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.error", "isEmpty": true }
+    },
+    {
+      "id": "github-status-ok",
+      "task": "有 fixture 时 GitHub 快照应抓取成功（status=ok）",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.github.status", "equals": "ok" }
+    },
+    {
+      "id": "github-total-2",
+      "task": "应汇总出 2 个仓库",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.github.total", "equals": 2 }
+    },
+    {
+      "id": "github-sorted-by-pushed-at",
+      "task": "列表应按 pushed_at 降序，最新的 beta 排第一",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.github.list[0].fullName", "equals": "fixture-org/beta" }
+    },
+    {
+      "id": "github-public-count-2",
+      "task": "两个都是 public，publicCount 应为 2",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.github.publicCount", "equals": 2 }
+    },
+    {
+      "id": "github-per-page-stopped",
+      "task": "2 条少于 perPage=10，分页应只请求 1 页",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.github.pages", "lengthAtLeast": 1 }
+    },
+    {
+      "id": "atomgit-degrades-not-crashes",
+      "task": "无 AtomGit fixture 时应降级为 unavailable 而不是抛错",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.atomgit.status", "equals": "unavailable" }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：schemaVersion 期望 999",
+      "call": { "fn": "project_dashboard", "args": {} },
+      "expect": { "jsonPath": "$.schemaVersion", "equals": 999 }
+    }
+  ]
+}

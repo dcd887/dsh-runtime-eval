@@ -1,0 +1,46 @@
+{
+  "plugin": "dsh-memory-plugin",
+  "origin": "third-party",
+  "pluginDir": "@ext/_git_dsh-memory-plugin",
+  "repo": "https://github.com/2132774831/dsh-memory-plugin",
+  "testedOn": "",
+  "note": "第三方插件（git clone 临时安装，测完删除）。断言只覆盖只读工具与参数校验，不碰 memory_save / memory_forget 这类会写库的操作。注意：这个插件的参数校验是「返回提示文本」而不是抛错，所以缺参断言用 containsAll 而非 isError——这是它和其他插件的行为差异，不是断言写错。",
+  "assertions": [
+    {
+      "id": "memory-list-returns-text",
+      "task": "memory_list 应返回非空文本（空库也要给提示）",
+      "call": { "fn": "memory_list", "args": {} },
+      "expect": { "jsonPath": "$", "lengthAtLeast": 1 }
+    },
+    {
+      "id": "memory-review-returns-text",
+      "task": "memory_review 应返回非空体检文本",
+      "call": { "fn": "memory_review", "args": {} },
+      "expect": { "jsonPath": "$", "lengthAtLeast": 1 }
+    },
+    {
+      "id": "search-without-query-hints",
+      "task": "memory_search 缺 query 应返回提示文本而不是抛错",
+      "call": { "fn": "memory_search", "args": {} },
+      "expect": { "jsonPath": "$", "containsAll": ["没有传入查询内容"] }
+    },
+    {
+      "id": "forget-without-id-hints",
+      "task": "memory_forget 缺 id 应返回提示文本而不是抛错",
+      "call": { "fn": "memory_forget", "args": {} },
+      "expect": { "jsonPath": "$", "containsAll": ["没有传入要删除的 id"] }
+    },
+    {
+      "id": "search-nonexistent-returns-text",
+      "task": "搜不存在的词应返回非空文本（无结果也说明清楚）",
+      "call": { "fn": "memory_search", "args": { "query": "zzz-no-such-memory-xyz" } },
+      "expect": { "jsonPath": "$", "lengthAtLeast": 1 }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：memory_list 期望含一个不可能出现的串",
+      "call": { "fn": "memory_list", "args": {} },
+      "expect": { "jsonPath": "$", "containsAll": ["<DELIBERATE-FAIL: 不该出现>"] }
+    }
+  ]
+}

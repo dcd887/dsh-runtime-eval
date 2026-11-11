@@ -1,0 +1,85 @@
+{
+  "plugin": "dsh-project-memory",
+  "origin": "third-party",
+  "repo": "https://github.com/00080000/dsh-project-memory",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "ranAt": "2026-11-11T08:41:53.225Z",
+  "total": 9,
+  "passed": 8,
+  "failed": 1,
+  "passRate": 88.9,
+  "results": [
+    {
+      "id": "memory-stats-readable",
+      "task": "memory_stats 应返回存储概况文本",
+      "pass": true,
+      "reason": "containsAll: ok",
+      "ms": 6,
+      "output": "Memory store: C:\\Users\\kjds\\Desktop\\DSH输出\\02_项目\\dsh-runtime-eval\\.dsh-project-memory\nFiles indexed: 0 | Entries: 0 | Experience notes: 0\nLast index: never\n\nVector: off (leanvec 未解析到) | re-rank alpha 0"
+    },
+    {
+      "id": "list-tasks-empty",
+      "task": "空 store 下 list_tasks 应提示任务记录为 0 套而不是报错",
+      "pass": true,
+      "reason": "containsAll: ok",
+      "ms": 2,
+      "output": "任务记录: 0 套（先做一步再建清单，或用 select_task 新建）"
+    },
+    {
+      "id": "show-task-panel-ok",
+      "task": "show_task_panel 应返回「已请求打开任务面板」",
+      "pass": true,
+      "reason": "containsAll: ok",
+      "ms": 0,
+      "output": "已请求打开任务面板。"
+    },
+    {
+      "id": "query-memory-requires-query",
+      "task": "query_memory 缺 query 应抛参数错误",
+      "pass": true,
+      "reason": "threw as expected: invalid arguments: missing required property \"query\"",
+      "ms": 1,
+      "error": "invalid arguments: missing required property \"query\""
+    },
+    {
+      "id": "query-memory-degrades-without-llm",
+      "task": "无 llm 时 query_memory 应走降级（返回无匹配提示）而不是崩溃",
+      "pass": true,
+      "reason": "containsAll: ok",
+      "ms": 12,
+      "output": "No memory matches for \"zzz-no-such-thing-xyz\" in C:\\Users\\kjds\\Desktop\\DSH输出\\02_项目\\dsh-runtime-eval. Index it first with index_repo / index_doc, or note a fix with remember or save_lesson.\nStore overv"
+    },
+    {
+      "id": "remember-requires-params",
+      "task": "remember 缺 problem/solution 应抛参数错误",
+      "pass": true,
+      "reason": "threw as expected: invalid arguments: missing required property \"problem\"; missing required property \"solution\"",
+      "ms": 1,
+      "error": "invalid arguments: missing required property \"problem\"; missing required property \"solution\""
+    },
+    {
+      "id": "forget-requires-target",
+      "task": "forget 缺 id_or_query 应抛参数错误",
+      "pass": true,
+      "reason": "threw as expected: invalid arguments: missing required property \"id_or_query\"",
+      "ms": 0,
+      "error": "invalid arguments: missing required property \"id_or_query\""
+    },
+    {
+      "id": "memory-stats-is-text",
+      "task": "memory_stats 返回值应是足够长的文本（不是空串）",
+      "pass": true,
+      "reason": "length 250 >= 30: ok",
+      "ms": 1,
+      "output": "Memory store: C:\\Users\\kjds\\Desktop\\DSH输出\\02_项目\\dsh-runtime-eval\\.dsh-project-memory\nFiles indexed: 0 | Entries: 0 | Experience notes: 0\nLast index: never\n\nVector: off (leanvec 未解析到) | re-rank alpha 0"
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：memory_stats 期望含一个不可能出现的串",
+      "pass": false,
+      "reason": "missing: Files indexed: 999999999",
+      "ms": 1,
+      "output": "Memory store: C:\\Users\\kjds\\Desktop\\DSH输出\\02_项目\\dsh-runtime-eval\\.dsh-project-memory\nFiles indexed: 0 | Entries: 0 | Experience notes: 0\nLast index: never\n\nVector: off (leanvec 未解析到) | re-rank alpha 0"
+    }
+  ]
+}

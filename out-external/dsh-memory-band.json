@@ -1,0 +1,61 @@
+{
+  "plugin": "dsh-memory-band",
+  "origin": "third-party",
+  "repo": "https://github.com/13576751971/dsh-memory-band",
+  "testedOn": "",
+  "ranAt": "2026-11-11T08:41:52.691Z",
+  "total": 6,
+  "passed": 5,
+  "failed": 1,
+  "passRate": 83.3,
+  "results": [
+    {
+      "id": "stats-returns-count",
+      "task": "action=stats 应返回记忆条数与用量",
+      "pass": true,
+      "reason": "containsAll: ok",
+      "ms": 3,
+      "output": "记忆 0 条，原文 0 字\n本次进程注入 0 次，估算 0 token\n数据目录 C:\\Users\\kjds\\.dsh\\dsh-memory-band"
+    },
+    {
+      "id": "recall-no-match",
+      "task": "recall 一个不存在的词应明确说没找到",
+      "pass": true,
+      "reason": "containsAll: ok",
+      "ms": 0,
+      "output": "没有找到相关记忆。"
+    },
+    {
+      "id": "recall-requires-query",
+      "task": "recall 缺 query 应抛错",
+      "pass": true,
+      "reason": "threw as expected: memory_band: recall 需要 query",
+      "ms": 0,
+      "error": "memory_band: recall 需要 query"
+    },
+    {
+      "id": "bad-action-rejected",
+      "task": "非法 action 应抛错并说明合法取值",
+      "pass": true,
+      "reason": "threw as expected: memory_band: action 只能是 recall / remember / stats",
+      "ms": 0,
+      "error": "memory_band: action 只能是 recall / remember / stats"
+    },
+    {
+      "id": "missing-action-rejected",
+      "task": "缺 action 应抛错",
+      "pass": true,
+      "reason": "threw as expected: memory_band: action 只能是 recall / remember / stats",
+      "ms": 0,
+      "error": "memory_band: action 只能是 recall / remember / stats"
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：stats 期望含一个不可能出现的串",
+      "pass": false,
+      "reason": "missing: <DELIBERATE-FAIL: 不该出现>",
+      "ms": 1,
+      "output": "记忆 0 条，原文 0 字\n本次进程注入 0 次，估算 0 token\n数据目录 C:\\Users\\kjds\\.dsh\\dsh-memory-band"
+    }
+  ]
+}

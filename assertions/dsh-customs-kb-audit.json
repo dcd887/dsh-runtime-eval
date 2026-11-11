@@ -1,0 +1,107 @@
+{
+  "plugin": "dsh-customs-kb-audit",
+  "origin": "self",
+  "pluginDir": "@local/dsh-customs-kb-audit",
+  "repo": "https://github.com/dcd887/dsh-customs-kb-audit",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "assertions": [
+    {
+      "id": "audit-total-1956",
+      "task": "知识库共 1956 条",
+      "call": {
+        "fn": "customs_kb_audit",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.total",
+        "equals": 1956
+      }
+    },
+    {
+      "id": "audit-coverage-official-100",
+      "task": "官方文号覆盖率应为 100%",
+      "call": {
+        "fn": "customs_kb_audit",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.coverage.officialNumber.pct",
+        "equals": 100
+      }
+    },
+    {
+      "id": "audit-has-shape",
+      "task": "应报告数据结构 shape",
+      "call": {
+        "fn": "customs_kb_audit",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.shape",
+        "containsAll": [
+          "classification_decisions"
+        ]
+      }
+    },
+    {
+      "id": "audit-rerun-identical",
+      "task": "两次运行应字节一致",
+      "call": {
+        "fn": "customs_kb_audit",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.rerunIdentical",
+        "equals": true
+      }
+    },
+    {
+      "id": "quality-total-match",
+      "task": "质量审计的总数应和结构审计一致",
+      "call": {
+        "fn": "customs_kb_quality",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.total",
+        "equals": 1956
+      }
+    },
+    {
+      "id": "quality-template-detected",
+      "task": "应检测到模板化描述",
+      "call": {
+        "fn": "customs_kb_quality",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.templateDescription.exactPct",
+        "atLeast": 50
+      }
+    },
+    {
+      "id": "quality-has-null-rates",
+      "task": "应输出 year 字段的空值统计（0 空 / 1956 有）",
+      "call": {
+        "fn": "customs_kb_quality",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.nullRates.year.present",
+        "equals": 1956
+      }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败",
+      "call": {
+        "fn": "customs_kb_audit",
+        "args": {}
+      },
+      "expect": {
+        "jsonPath": "$.total",
+        "equals": 99999
+      }
+    }
+  ]
+}

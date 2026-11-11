@@ -1,0 +1,10 @@
+# 依赖
+node_modules/
+
+# brief-pack 跑出来的临时任务包（每次 eval 都会重建）
+out/briefs/
+
+# 日志与系统文件
+*.log
+.DS_Store
+Thumbs.db

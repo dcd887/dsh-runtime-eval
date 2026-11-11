@@ -1,0 +1,50 @@
+{
+  "plugin": "dsh-office-qa",
+  "origin": "self",
+  "pluginDir": "@local/dsh-office-qa",
+  "repo": "https://github.com/dcd887/dsh-office-qa",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "assertions": [
+    {
+      "id": "qa-docx-returns-json",
+      "task": "对一个真 docx 应识别为 docx 并给出字体摘要",
+      "call": {
+        "fn": "office_qa",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.docx"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.kind",
+        "equals": "docx"
+      }
+    },
+    {
+      "id": "qa-missing-file-errors",
+      "task": "文件不存在时应抛错",
+      "call": {
+        "fn": "office_qa",
+        "args": {
+          "path": "C:/nope/x.docx"
+        }
+      },
+      "expect": {
+        "isError": true
+      }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败",
+      "call": {
+        "fn": "office_qa",
+        "args": {
+          "path": "${ROOT}/fixtures/sample.docx"
+        }
+      },
+      "expect": {
+        "jsonPath": "$",
+        "isEmpty": true
+      }
+    }
+  ]
+}

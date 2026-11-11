@@ -1,0 +1,61 @@
+{
+  "plugin": "dsh-memory-plugin",
+  "origin": "third-party",
+  "repo": "https://github.com/2132774831/dsh-memory-plugin",
+  "testedOn": "",
+  "ranAt": "2026-11-11T08:41:52.848Z",
+  "total": 6,
+  "passed": 5,
+  "failed": 1,
+  "passRate": 83.3,
+  "results": [
+    {
+      "id": "memory-list-returns-text",
+      "task": "memory_list 应返回非空文本（空库也要给提示）",
+      "pass": true,
+      "reason": "length 8 >= 1: ok",
+      "ms": 2,
+      "output": "记忆库还是空的。"
+    },
+    {
+      "id": "memory-review-returns-text",
+      "task": "memory_review 应返回非空体检文本",
+      "pass": true,
+      "reason": "length 16 >= 1: ok",
+      "ms": 10,
+      "output": "记忆库还是空的，没什么可体检的。"
+    },
+    {
+      "id": "search-without-query-hints",
+      "task": "memory_search 缺 query 应返回提示文本而不是抛错",
+      "pass": true,
+      "reason": "containsAll: ok",
+      "ms": 3,
+      "output": "没有传入查询内容（query 为空）。"
+    },
+    {
+      "id": "forget-without-id-hints",
+      "task": "memory_forget 缺 id 应返回提示文本而不是抛错",
+      "pass": true,
+      "reason": "containsAll: ok",
+      "ms": 2,
+      "output": "没有传入要删除的 id。"
+    },
+    {
+      "id": "search-nonexistent-returns-text",
+      "task": "搜不存在的词应返回非空文本（无结果也说明清楚）",
+      "pass": true,
+      "reason": "length 38 >= 1: ok",
+      "ms": 2,
+      "output": "记忆库还是空的。 如果这件事值得记，可以用 memory_save 写进去。"
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：memory_list 期望含一个不可能出现的串",
+      "pass": false,
+      "reason": "missing: <DELIBERATE-FAIL: 不该出现>",
+      "ms": 1,
+      "output": "记忆库还是空的。"
+    }
+  ]
+}

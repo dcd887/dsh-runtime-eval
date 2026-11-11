@@ -1,0 +1,77 @@
+{
+  "plugin": "dsh-ledger-memory",
+  "origin": "third-party",
+  "repo": "https://github.com/18477514055/dsh-ledger-memory",
+  "testedOn": "",
+  "ranAt": "2026-11-11T08:41:52.554Z",
+  "total": 8,
+  "passed": 7,
+  "failed": 1,
+  "passRate": 87.5,
+  "results": [
+    {
+      "id": "status-ok",
+      "task": "ledger_status 对存在的空目录应返回 ok=true",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 250,
+      "output": "{\"ok\":true,\"projectRoot\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\fixtures\\\\ledger-scratch\",\"initialized\":false,\"freshProject\":true,\"isGitRepo\":false,\"containerWorkspace\":null,\"hasGi"
+    },
+    {
+      "id": "status-not-initialized",
+      "task": "空目录应报告 initialized=false",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 220,
+      "output": "{\"ok\":true,\"projectRoot\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\fixtures\\\\ledger-scratch\",\"initialized\":false,\"freshProject\":true,\"isGitRepo\":false,\"containerWorkspace\":null,\"hasGi"
+    },
+    {
+      "id": "read-no-ledger",
+      "task": "没登记过账本时 ledger_read 应 found=false（不是抛错）",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 6,
+      "output": "{\"ok\":true,\"target\":\"active\",\"found\":false,\"reason\":\"no such ledger file is registered\"}"
+    },
+    {
+      "id": "read-defaults-to-active",
+      "task": "ledger_read 缺 target 时默认读 active，不抛错",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 3,
+      "output": "{\"ok\":true,\"target\":\"active\",\"found\":false,\"reason\":\"no such ledger file is registered\"}"
+    },
+    {
+      "id": "log-not-enabled",
+      "task": "未启用活动日志时 ledger_log 应 ok=false 并给出提示",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 4,
+      "output": "{\"ok\":false,\"reason\":\"这个项目还没有启用活动日志。用 `ledger_init` 传 `logDir` 登记（例如 `_ledger-log`），或先写一次台账再重试。\",\"hint\":\"ledger_init\"}"
+    },
+    {
+      "id": "status-requires-root",
+      "task": "没有 root、也没有会话 cwd 时应抛错",
+      "pass": true,
+      "reason": "threw as expected: project-ledger: 这个执行没有可用的会话工作目录（agent.session.header.cwd），无法定位项目根。若本会话是从容器工作区开的，请用 root 参数点名子项目目录。",
+      "ms": 0,
+      "error": "project-ledger: 这个执行没有可用的会话工作目录（agent.session.header.cwd），无法定位项目根。若本会话是从容器工作区开的，请用 root 参数点名子项目目录。"
+    },
+    {
+      "id": "conform-no-change",
+      "task": "ledger_conform 不带 apply 时应只检查不改动（changed=false）",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 4,
+      "output": "{\"ok\":true,\"applied\":false,\"changed\":false,\"actions\":[],\"skipped\":[\"连候选名都没找到决策记录：它该叫什么需要 AI 决定（结构问题），本次不动\",\"连候选名都没找到归档目录：它该叫什么需要 AI 决定（结构问题），本次不动\",\"留给 AI：要由 AI 设计一套结构（用 ledger_init）\"],\"wroteManifest\":"
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：空的 scratch 目录期望已初始化",
+      "pass": false,
+      "reason": "equals: false !== true",
+      "ms": 228,
+      "output": "{\"ok\":true,\"projectRoot\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\fixtures\\\\ledger-scratch\",\"initialized\":false,\"freshProject\":true,\"isGitRepo\":false,\"containerWorkspace\":null,\"hasGi"
+    }
+  ]
+}

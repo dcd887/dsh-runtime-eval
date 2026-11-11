@@ -1,0 +1,93 @@
+{
+  "plugin": "mock-doc-read",
+  "origin": "mock",
+  "repo": "https://github.com/dcd887/dsh-doc-read",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "ranAt": "2026-11-11T09:08:22.124Z",
+  "total": 10,
+  "passed": 9,
+  "failed": 1,
+  "passRate": 90,
+  "results": [
+    {
+      "id": "outline-page-count",
+      "task": "12 页 PDF 的 doc_outline 应返回 12 页",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 1,
+      "output": "{\"pages\":12,\"lines\":480,\"title\":\"sample\"}"
+    },
+    {
+      "id": "outline-returns-title",
+      "task": "doc_outline 应返回 title 字段",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 0,
+      "output": "{\"pages\":12,\"lines\":480,\"title\":\"sample\"}"
+    },
+    {
+      "id": "outline-missing-file-errors",
+      "task": "文件不存在时应抛错",
+      "pass": true,
+      "reason": "threw as expected: file not found: fixtures/missing.pdf",
+      "ms": 0,
+      "error": "file not found: fixtures/missing.pdf"
+    },
+    {
+      "id": "read-page-range",
+      "task": "读第 3-5 页，应只返回 3 页内容",
+      "pass": true,
+      "reason": "containsAll: ok; containsNone: ok",
+      "ms": 0,
+      "output": "第 3 页的内容\n第 4 页的内容\n第 5 页的内容"
+    },
+    {
+      "id": "read-single-page",
+      "task": "只读第 1 页，应只有第 1 页",
+      "pass": true,
+      "reason": "containsAll: ok; containsNone: ok",
+      "ms": 0,
+      "output": "第 1 页的内容"
+    },
+    {
+      "id": "read-out-of-range-clamped",
+      "task": "读第 11-99 页，应只返回 11、12 两页（不抛错）",
+      "pass": true,
+      "reason": "containsAll: ok; containsNone: ok",
+      "ms": 1,
+      "output": "第 11 页的内容\n第 12 页的内容"
+    },
+    {
+      "id": "read-invalid-from-errors",
+      "task": "from < 1 时应抛错",
+      "pass": true,
+      "reason": "threw as expected: from must be >= 1",
+      "ms": 0,
+      "error": "from must be >= 1"
+    },
+    {
+      "id": "grep-hits",
+      "task": "搜存在的词，命中数应 >= 1",
+      "pass": true,
+      "reason": "length 2 >= 1: ok",
+      "ms": 0,
+      "output": "[{\"page\":1,\"line\":3,\"text\":\"...税则...\"},{\"page\":7,\"line\":12,\"text\":\"...税则...\"}]"
+    },
+    {
+      "id": "grep-no-hits",
+      "task": "搜不存在的词，命中数应为 0",
+      "pass": true,
+      "reason": "empty: ok",
+      "ms": 0,
+      "output": "[]"
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：期望 999，实际 12",
+      "pass": false,
+      "reason": "equals: 12 !== 999",
+      "ms": 0,
+      "output": "{\"pages\":12,\"lines\":480,\"title\":\"sample\"}"
+    }
+  ]
+}

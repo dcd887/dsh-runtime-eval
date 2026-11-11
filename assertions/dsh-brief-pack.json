@@ -1,0 +1,218 @@
+{
+  "plugin": "dsh-brief-pack",
+  "origin": "self",
+  "pluginDir": "@local/dsh-brief-pack",
+  "pluginConfig": {
+    "outDir": "${ROOT}/out/briefs"
+  },
+  "repo": "https://github.com/dcd887/dsh-brief-pack",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "assertions": [
+    {
+      "id": "pack-files-count",
+      "task": "传 1 个文件，filesPacked 应有 1 项",
+      "call": {
+        "fn": "pack_brief",
+        "args": {
+          "task": "t1",
+          "files": [
+            {
+              "path": "${ROOT}/fixtures/brief-source.md",
+              "hint": "token"
+            }
+          ],
+          "budgetTokens": 2000
+        }
+      },
+      "expect": {
+        "jsonPath": "$.filesPacked",
+        "lengthAtLeast": 1
+      }
+    },
+    {
+      "id": "pack-token-under-budget",
+      "task": "生成的包不应超过预算（含 20% 估算余量）",
+      "call": {
+        "fn": "pack_brief",
+        "args": {
+          "task": "t2",
+          "files": [
+            {
+              "path": "${ROOT}/fixtures/brief-source.md",
+              "hint": "token"
+            }
+          ],
+          "budgetTokens": 2000
+        }
+      },
+      "expect": {
+        "jsonPath": "$.approxTokens",
+        "atMost": 2400
+      }
+    },
+    {
+      "id": "pack-budget-echoed",
+      "task": "budgetTokens 应原样回显",
+      "call": {
+        "fn": "pack_brief",
+        "args": {
+          "task": "t3",
+          "files": [
+            {
+              "path": "${ROOT}/fixtures/brief-source.md"
+            }
+          ],
+          "budgetTokens": 2000
+        }
+      },
+      "expect": {
+        "jsonPath": "$.budgetTokens",
+        "equals": 2000
+      }
+    },
+    {
+      "id": "pack-has-brief-path",
+      "task": "应返回 briefPath",
+      "call": {
+        "fn": "pack_brief",
+        "args": {
+          "task": "t4",
+          "files": [
+            {
+              "path": "${ROOT}/fixtures/brief-source.md"
+            }
+          ]
+        }
+      },
+      "expect": {
+        "jsonPath": "$.briefPath",
+        "containsAll": [
+          ".md"
+        ]
+      }
+    },
+    {
+      "id": "pack-no-truncation-small-file",
+      "task": "6 KB 文件在 8000 预算下不应截断",
+      "call": {
+        "fn": "pack_brief",
+        "args": {
+          "task": "t5",
+          "files": [
+            {
+              "path": "${ROOT}/fixtures/brief-source.md"
+            }
+          ],
+          "budgetTokens": 8000
+        }
+      },
+      "expect": {
+        "jsonPath": "$.truncatedFiles",
+        "isEmpty": true
+      }
+    },
+    {
+      "id": "pack-matched-terms-nonempty",
+      "task": "有 hint 时应记录命中的关键词",
+      "call": {
+        "fn": "pack_brief",
+        "args": {
+          "task": "t6",
+          "files": [
+            {
+              "path": "${ROOT}/fixtures/brief-source.md",
+              "hint": "token 预算"
+            }
+          ],
+          "budgetTokens": 2000
+        }
+      },
+      "expect": {
+        "jsonPath": "$.filesPacked[0].matchedTerms",
+        "lengthAtLeast": 1
+      }
+    },
+    {
+      "id": "pack-token-note-present",
+      "task": "应标注 token 是估算值",
+      "call": {
+        "fn": "pack_brief",
+        "args": {
+          "task": "t7",
+          "files": [
+            {
+              "path": "${ROOT}/fixtures/brief-source.md"
+            }
+          ],
+          "budgetTokens": 2000
+        }
+      },
+      "expect": {
+        "jsonPath": "$.tokenEstimateNote",
+        "containsAll": [
+          "估算"
+        ]
+      }
+    },
+    {
+      "id": "pack-hint-method-recorded",
+      "task": "有 hint 时 method 应为 hint",
+      "call": {
+        "fn": "pack_brief",
+        "args": {
+          "task": "t8",
+          "files": [
+            {
+              "path": "${ROOT}/fixtures/brief-source.md",
+              "hint": "token"
+            }
+          ],
+          "budgetTokens": 2000
+        }
+      },
+      "expect": {
+        "jsonPath": "$.filesPacked[0].method",
+        "equals": "hint"
+      }
+    },
+    {
+      "id": "pack-missing-file-marked-missing",
+      "task": "文件不存在时不抛错，而是在 filesPacked[0].kind 标 missing",
+      "call": {
+        "fn": "pack_brief",
+        "args": {
+          "task": "t9",
+          "files": [
+            {
+              "path": "C:/nope/zzz.md"
+            }
+          ]
+        }
+      },
+      "expect": {
+        "jsonPath": "$.filesPacked[0].kind",
+        "equals": "missing"
+      }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：期望 approxTokens=99999",
+      "call": {
+        "fn": "pack_brief",
+        "args": {
+          "task": "t10",
+          "files": [
+            {
+              "path": "${ROOT}/fixtures/brief-source.md"
+            }
+          ],
+          "budgetTokens": 2000
+        }
+      },
+      "expect": {
+        "jsonPath": "$.approxTokens",
+        "equals": 99999
+      }
+    }
+  ]
+}

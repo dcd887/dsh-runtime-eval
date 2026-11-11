@@ -1,0 +1,127 @@
+{
+  "scannedAt": "2026-11-11T08:36:47.556Z",
+  "source": "awesome-dsh-plugin 索引抽样（文件名解析 owner/repo，git clone）",
+  "sample": 20,
+  "cloned": 16,
+  "counts": {
+    "loaded": 5,
+    "noTools": 7,
+    "timeout": 0,
+    "failed": 4
+  },
+  "totalTools": 44,
+  "plugins": [
+    {
+      "插件": "companion-memory",
+      "状态": "FAIL",
+      "工具数": 0,
+      "耗时": 30,
+      "备注": "plugin dsh-companion-memory-core does not export apply(ctx, config)"
+    },
+    {
+      "插件": "dph-taskboard",
+      "状态": "NO-TOOL",
+      "工具数": 0,
+      "耗时": 6,
+      "备注": "plugin @dph/taskboard registered no tools (apply ran but ctx.tools.reg"
+    },
+    {
+      "插件": "dsh-ledger-memory",
+      "状态": "LOADED",
+      "工具数": 22,
+      "耗时": 62,
+      "备注": "ledger_status,ledger_init,ledger_read"
+    },
+    {
+      "插件": "dsh-mailbox",
+      "状态": "NO-TOOL",
+      "工具数": 0,
+      "耗时": 4,
+      "备注": "plugin dsh-mailbox registered no tools (apply ran but ctx.tools.regist"
+    },
+    {
+      "插件": "dsh-mcp-workbench",
+      "状态": "FAIL",
+      "工具数": 0,
+      "耗时": 1,
+      "备注": "Cannot find module 'C:\\Users\\kjds\\AppData\\Local\\Temp\\rt-eval-plugins\\n"
+    },
+    {
+      "插件": "dsh-memory-band",
+      "状态": "LOADED",
+      "工具数": 1,
+      "耗时": 19,
+      "备注": "memory_band"
+    },
+    {
+      "插件": "dsh-memory-brain-plugin",
+      "状态": "NO-TOOL",
+      "工具数": 0,
+      "耗时": 6,
+      "备注": "plugin dsh-memory-neural-map registered no tools (apply ran but ctx.to"
+    },
+    {
+      "插件": "dsh-memory-plugin",
+      "状态": "LOADED",
+      "工具数": 5,
+      "耗时": 8,
+      "备注": "memory_save,memory_search,memory_list"
+    },
+    {
+      "插件": "DSH-Official-WorkBuddy-Credit-Proxy",
+      "状态": "FAIL",
+      "工具数": 0,
+      "耗时": 16,
+      "备注": "Cannot find package '@earendil-works/pi-ai' imported from C:\\Users\\kjd"
+    },
+    {
+      "插件": "dsh-plan-note",
+      "状态": "NO-TOOL",
+      "工具数": 0,
+      "耗时": 1,
+      "备注": "plugin dsh-plan-note registered no tools (apply ran but ctx.tools.regi"
+    },
+    {
+      "插件": "dsh-plugin-task-forge",
+      "状态": "NO-TOOL",
+      "工具数": 0,
+      "耗时": 41,
+      "备注": "plugin dsh-plugin-task-forge registered no tools (apply ran but ctx.to"
+    },
+    {
+      "插件": "dsh-project-memory",
+      "状态": "LOADED",
+      "工具数": 12,
+      "耗时": 111,
+      "备注": "list_tasks,select_task,archive_task"
+    },
+    {
+      "插件": "dsh-prompt-ErrorNotes-desk",
+      "状态": "NO-TOOL",
+      "工具数": 0,
+      "耗时": 3,
+      "备注": "plugin dsh-prompt-ErrorNotes-desk registered no tools (apply ran but c"
+    },
+    {
+      "插件": "dsh-read-url",
+      "状态": "LOADED",
+      "工具数": 4,
+      "耗时": 8,
+      "备注": "read_url,read_url_links,read_url_batch"
+    },
+    {
+      "插件": "dsh-session-search",
+      "状态": "NO-TOOL",
+      "工具数": 0,
+      "耗时": 7,
+      "备注": "plugin @240xu/dsh-session-search registered no tools (apply ran but ct"
+    },
+    {
+      "插件": "dsh-wsl-db",
+      "状态": "FAIL",
+      "工具数": 0,
+      "耗时": 3,
+      "备注": "Cannot read properties of undefined (reading 'section')"
+    }
+  ]
+}

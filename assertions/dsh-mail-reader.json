@@ -1,0 +1,73 @@
+{
+  "plugin": "dsh-mail-reader",
+  "origin": "self",
+  "pluginDir": "@local/dsh-mail-reader",
+  "repo": "",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "note": "邮件类插件：断言只判结构与参数校验，不比较主题/发件人/正文。返回邮件内容的断言一律 redact=true，避免正文落盘到 out/*.json。mail_read 的成功路径未断言（正文不进评测器记录），只测其错误路径。",
+  "assertions": [
+    {
+      "id": "probe-ok",
+      "task": "mail_probe 应连通并返回 ok=true",
+      "call": { "fn": "mail_probe", "args": {} },
+      "expect": { "jsonPath": "$.ok", "equals": true }
+    },
+    {
+      "id": "probe-port-993",
+      "task": "网易 IMAP 端口应为 993",
+      "call": { "fn": "mail_probe", "args": {} },
+      "expect": { "jsonPath": "$.port", "equals": 993 }
+    },
+    {
+      "id": "probe-readonly",
+      "task": "应是只读模式（readonly=true）",
+      "call": { "fn": "mail_probe", "args": {} },
+      "expect": { "jsonPath": "$.readonly", "equals": true }
+    },
+    {
+      "id": "list-ok",
+      "task": "mail_list 应返回 ok=true",
+      "redact": true,
+      "call": { "fn": "mail_list", "args": { "days": 7, "limit": 5 } },
+      "expect": { "jsonPath": "$.ok", "equals": true }
+    },
+    {
+      "id": "list-days-clamped-to-365",
+      "task": "days=9999 应被 clamp 到上限 365",
+      "redact": true,
+      "call": { "fn": "mail_list", "args": { "days": 9999, "limit": 1 } },
+      "expect": { "jsonPath": "$.days", "equals": 365 }
+    },
+    {
+      "id": "search-without-keyword-errors",
+      "task": "mail_search 无关键词应直接抛错（不发 IMAP 请求）",
+      "call": { "fn": "mail_search", "args": {} },
+      "expect": { "isError": true }
+    },
+    {
+      "id": "read-nonnumeric-uid-errors",
+      "task": "mail_read 的 uid 非数字应抛错",
+      "call": { "fn": "mail_read", "args": { "uid": "abc" } },
+      "expect": { "isError": true }
+    },
+    {
+      "id": "read-missing-uid-errors",
+      "task": "mail_read 的 uid 不存在应抛错",
+      "call": { "fn": "mail_read", "args": { "uid": "999999999" } },
+      "expect": { "isError": true }
+    },
+    {
+      "id": "search-nonsense-zero",
+      "task": "搜绝对不存在的主题应为 0 封",
+      "redact": true,
+      "call": { "fn": "mail_search", "args": { "subject": "zzz-no-such-subject-xyz", "days": 7 } },
+      "expect": { "jsonPath": "$.count", "equals": 0 }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：uid 非数字本应抛错，这里却期望 ok=true",
+      "call": { "fn": "mail_read", "args": { "uid": "abc" } },
+      "expect": { "jsonPath": "$.ok", "equals": true }
+    }
+  ]
+}

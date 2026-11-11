@@ -1,0 +1,117 @@
+{
+  "plugin": "project-dashboard",
+  "origin": "self",
+  "repo": "",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "ranAt": "2026-11-11T09:08:22.309Z",
+  "total": 13,
+  "passed": 12,
+  "failed": 1,
+  "passRate": 92.3,
+  "results": [
+    {
+      "id": "schema-version-1",
+      "task": "payload 的 schemaVersion 应为 1",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 52,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.295Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "generated-at-iso",
+      "task": "generatedAt 应是 ISO 8601 时间戳",
+      "pass": true,
+      "reason": "matches /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}/: ok",
+      "ms": 3,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.298Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "datafile-points-to-data-json",
+      "task": "dataFile 应指向 data.json",
+      "pass": true,
+      "reason": "matches /data\\.json$/: ok",
+      "ms": 0,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.299Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "dataset-schema-version",
+      "task": "读到的 data.json 应含 schemaVersion=1",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 1,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.300Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "dataset-has-groups",
+      "task": "数据集里应有至少 1 个分组",
+      "pass": true,
+      "reason": "length 8 >= 1: ok",
+      "ms": 1,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.301Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "no-top-level-error",
+      "task": "数据集读取成功时不应带 error 字段",
+      "pass": true,
+      "reason": "empty: ok",
+      "ms": 0,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.302Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "github-status-ok",
+      "task": "有 fixture 时 GitHub 快照应抓取成功（status=ok）",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 1,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.303Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "github-total-2",
+      "task": "应汇总出 2 个仓库",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 1,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.304Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "github-sorted-by-pushed-at",
+      "task": "列表应按 pushed_at 降序，最新的 beta 排第一",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 1,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.305Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "github-public-count-2",
+      "task": "两个都是 public，publicCount 应为 2",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 1,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.306Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "github-per-page-stopped",
+      "task": "2 条少于 perPage=10，分页应只请求 1 页",
+      "pass": true,
+      "reason": "length 1 >= 1: ok",
+      "ms": 1,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.307Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "atomgit-degrades-not-crashes",
+      "task": "无 AtomGit fixture 时应降级为 unavailable 而不是抛错",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 1,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.308Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：schemaVersion 期望 999",
+      "pass": false,
+      "reason": "equals: 1 !== 999",
+      "ms": 0,
+      "output": "{\"schemaVersion\":1,\"generatedAt\":\"2026-11-11T09:08:22.309Z\",\"dataFile\":\"C:\\\\Users\\\\kjds\\\\.dsh\\\\dsh-plugin-work\\\\project-dashboard\\\\data.json\",\"data\":{\"schemaVersion\":1,\"updatedAt\":\"2026-10-25\",\"update"
+    }
+  ]
+}

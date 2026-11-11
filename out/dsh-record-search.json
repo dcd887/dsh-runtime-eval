@@ -1,0 +1,77 @@
+{
+  "plugin": "dsh-record-search",
+  "origin": "self",
+  "repo": "https://github.com/dcd887/dsh-record-search",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "ranAt": "2026-11-11T09:08:22.009Z",
+  "total": 8,
+  "passed": 7,
+  "failed": 1,
+  "passRate": 87.5,
+  "results": [
+    {
+      "id": "search-ok",
+      "task": "搜索应返回 ok=true",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 612,
+      "output": "{\"ok\":true,\"indexed\":true,\"query\":\"测试\",\"sessionsMatched\":181,\"totalHits\":1704,\"tookMs\":612,\"index\":{\"sessions\":257,\"docs\":42510,\"builtAt\":1794308316683,\"buildMs\":0},\"sessions\":[{\"id\":\"session-a95b55bb"
+    },
+    {
+      "id": "search-indexed",
+      "task": "索引应已建立",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 20,
+      "output": "{\"ok\":true,\"indexed\":true,\"query\":\"测试\",\"sessionsMatched\":181,\"totalHits\":1704,\"tookMs\":19,\"index\":{\"sessions\":257,\"docs\":42510,\"builtAt\":1794308316683,\"buildMs\":0},\"sessions\":[{\"id\":\"session-a95b55bb-"
+    },
+    {
+      "id": "search-sessions-matched",
+      "task": "搜「测试」应命中会话",
+      "pass": true,
+      "reason": "181 >= 1: ok",
+      "ms": 15,
+      "output": "{\"ok\":true,\"indexed\":true,\"query\":\"测试\",\"sessionsMatched\":181,\"totalHits\":1704,\"tookMs\":15,\"index\":{\"sessions\":257,\"docs\":42510,\"builtAt\":1794308316683,\"buildMs\":0},\"sessions\":[{\"id\":\"session-a95b55bb-"
+    },
+    {
+      "id": "search-total-hits",
+      "task": "命中总数应 >= 1",
+      "pass": true,
+      "reason": "1704 >= 1: ok",
+      "ms": 17,
+      "output": "{\"ok\":true,\"indexed\":true,\"query\":\"测试\",\"sessionsMatched\":181,\"totalHits\":1704,\"tookMs\":17,\"index\":{\"sessions\":257,\"docs\":42510,\"builtAt\":1794308316683,\"buildMs\":0},\"sessions\":[{\"id\":\"session-a95b55bb-"
+    },
+    {
+      "id": "search-index-sessions",
+      "task": "索引里会话数应 >= 1",
+      "pass": true,
+      "reason": "257 >= 1: ok",
+      "ms": 30,
+      "output": "{\"ok\":true,\"indexed\":true,\"query\":\"测试\",\"sessionsMatched\":181,\"totalHits\":1704,\"tookMs\":30,\"index\":{\"sessions\":257,\"docs\":42510,\"builtAt\":1794308316683,\"buildMs\":0},\"sessions\":[{\"id\":\"session-a95b55bb-"
+    },
+    {
+      "id": "search-took-ms",
+      "task": "应返回耗时",
+      "pass": true,
+      "reason": "15 >= 0: ok",
+      "ms": 15,
+      "output": "{\"ok\":true,\"indexed\":true,\"query\":\"测试\",\"sessionsMatched\":181,\"totalHits\":1704,\"tookMs\":15,\"index\":{\"sessions\":257,\"docs\":42510,\"builtAt\":1794308316683,\"buildMs\":0},\"sessions\":[{\"id\":\"session-a95b55bb-"
+    },
+    {
+      "id": "search-nonsense-zero",
+      "task": "搜不存在的词应为 0 命中",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 7,
+      "output": "{\"ok\":true,\"indexed\":true,\"query\":\"zzz-绝对不存在-zzz\",\"sessionsMatched\":0,\"totalHits\":0,\"tookMs\":7,\"index\":{\"sessions\":257,\"docs\":42510,\"builtAt\":1794308316683,\"buildMs\":0},\"sessions\":[],\"text\":\"「zzz-绝对不存"
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败",
+      "pass": false,
+      "reason": "equals: 181 !== -1",
+      "ms": 12,
+      "output": "{\"ok\":true,\"indexed\":true,\"query\":\"测试\",\"sessionsMatched\":181,\"totalHits\":1704,\"tookMs\":12,\"index\":{\"sessions\":257,\"docs\":42510,\"builtAt\":1794308316683,\"buildMs\":0},\"sessions\":[{\"id\":\"session-a95b55bb-"
+    }
+  ]
+}

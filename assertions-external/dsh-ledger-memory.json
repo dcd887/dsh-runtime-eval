@@ -1,0 +1,58 @@
+{
+  "plugin": "dsh-ledger-memory",
+  "origin": "third-party",
+  "pluginDir": "@ext/_git_dsh-ledger-memory",
+  "repo": "https://github.com/18477514055/dsh-ledger-memory",
+  "testedOn": "",
+  "note": "第三方插件（git clone 临时安装，测完删除）。22 个工具里绝大多数会写文件（ledger_init / ledger_write / ledger_archive / ledger_note / ledger_handoff …），本断言集只覆盖只读的 5 个：status / read / log / conform，加上 root 与 target 的参数校验。root 指向项目内的 fixtures/ledger-scratch（空目录，未初始化），所以 initialized=false、found=false 是确定行为。",
+  "assertions": [
+    {
+      "id": "status-ok",
+      "task": "ledger_status 对存在的空目录应返回 ok=true",
+      "call": { "fn": "ledger_status", "args": { "root": "fixtures/ledger-scratch" } },
+      "expect": { "jsonPath": "$.ok", "equals": true }
+    },
+    {
+      "id": "status-not-initialized",
+      "task": "空目录应报告 initialized=false",
+      "call": { "fn": "ledger_status", "args": { "root": "fixtures/ledger-scratch" } },
+      "expect": { "jsonPath": "$.initialized", "equals": false }
+    },
+    {
+      "id": "read-no-ledger",
+      "task": "没登记过账本时 ledger_read 应 found=false（不是抛错）",
+      "call": { "fn": "ledger_read", "args": { "root": "fixtures/ledger-scratch", "target": "active" } },
+      "expect": { "jsonPath": "$.found", "equals": false }
+    },
+    {
+      "id": "read-defaults-to-active",
+      "task": "ledger_read 缺 target 时默认读 active，不抛错",
+      "call": { "fn": "ledger_read", "args": { "root": "fixtures/ledger-scratch" } },
+      "expect": { "jsonPath": "$.target", "equals": "active" }
+    },
+    {
+      "id": "log-not-enabled",
+      "task": "未启用活动日志时 ledger_log 应 ok=false 并给出提示",
+      "call": { "fn": "ledger_log", "args": { "root": "fixtures/ledger-scratch" } },
+      "expect": { "jsonPath": "$.ok", "equals": false }
+    },
+    {
+      "id": "status-requires-root",
+      "task": "没有 root、也没有会话 cwd 时应抛错",
+      "call": { "fn": "ledger_status", "args": {} },
+      "expect": { "isError": true }
+    },
+    {
+      "id": "conform-no-change",
+      "task": "ledger_conform 不带 apply 时应只检查不改动（changed=false）",
+      "call": { "fn": "ledger_conform", "args": { "root": "fixtures/ledger-scratch" } },
+      "expect": { "jsonPath": "$.changed", "equals": false }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：空的 scratch 目录期望已初始化",
+      "call": { "fn": "ledger_status", "args": { "root": "fixtures/ledger-scratch" } },
+      "expect": { "jsonPath": "$.initialized", "equals": true }
+    }
+  ]
+}

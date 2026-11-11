@@ -1,0 +1,101 @@
+{
+  "plugin": "dsh-doc-read",
+  "origin": "self",
+  "repo": "https://github.com/dcd887/dsh-doc-read",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "ranAt": "2026-11-11T09:08:09.800Z",
+  "total": 11,
+  "passed": 10,
+  "failed": 1,
+  "passRate": 90.9,
+  "results": [
+    {
+      "id": "outline-page-count",
+      "task": "2 页 PDF 的 doc_outline 应返回 pages=2",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 635,
+      "output": "{\"file\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval/fixtures/sample.pdf\",\"kind\":\"pdf\",\"size\":1222,\"pages\":2,\"unit\":\"页\",\"charsOfFirst\":268,\"sampled\":\"all\",\"outline\":[{\"p\":1,\"c\":147,\"head\""
+    },
+    {
+      "id": "outline-kind-pdf",
+      "task": "kind 应为 pdf",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 6,
+      "output": "{\"file\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval/fixtures/sample.pdf\",\"kind\":\"pdf\",\"size\":1222,\"pages\":2,\"unit\":\"页\",\"charsOfFirst\":268,\"sampled\":\"all\",\"outline\":[{\"p\":1,\"c\":147,\"head\""
+    },
+    {
+      "id": "outline-two-pages",
+      "task": "outline 数组应有 2 项",
+      "pass": true,
+      "reason": "length 2 >= 2: ok",
+      "ms": 5,
+      "output": "{\"file\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval/fixtures/sample.pdf\",\"kind\":\"pdf\",\"size\":1222,\"pages\":2,\"unit\":\"页\",\"charsOfFirst\":268,\"sampled\":\"all\",\"outline\":[{\"p\":1,\"c\":147,\"head\""
+    },
+    {
+      "id": "outline-first-page-head",
+      "task": "第 1 页的 head 应提到 page one",
+      "pass": true,
+      "reason": "containsAll: ok",
+      "ms": 6,
+      "output": "{\"file\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval/fixtures/sample.pdf\",\"kind\":\"pdf\",\"size\":1222,\"pages\":2,\"unit\":\"页\",\"charsOfFirst\":268,\"sampled\":\"all\",\"outline\":[{\"p\":1,\"c\":147,\"head\""
+    },
+    {
+      "id": "outline-missing-file-errors",
+      "task": "文件不存在时应抛错",
+      "pass": true,
+      "reason": "threw as expected: 文件不存在: C:/nope/missing.pdf",
+      "ms": 0,
+      "error": "文件不存在: C:/nope/missing.pdf"
+    },
+    {
+      "id": "read-range-1-1",
+      "task": "读第 1 页，range 应为 1-1，returned 应为 1",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 4,
+      "output": "{\"file\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval/fixtures/sample.pdf\",\"kind\":\"pdf\",\"pages\":2,\"unit\":\"页\",\"range\":\"1-1\",\"returned\":\"1\",\"chars\":147,\"body\":[{\"p\":1,\"c\":147,\"text\":\"dsh-doc"
+    },
+    {
+      "id": "read-body-length",
+      "task": "读第 1 页时 body 应只有 1 项",
+      "pass": true,
+      "reason": "length 1 >= 1: ok",
+      "ms": 4,
+      "output": "{\"file\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval/fixtures/sample.pdf\",\"kind\":\"pdf\",\"pages\":2,\"unit\":\"页\",\"range\":\"1-1\",\"returned\":\"1\",\"chars\":147,\"body\":[{\"p\":1,\"c\":147,\"text\":\"dsh-doc"
+    },
+    {
+      "id": "read-body-text-contains-keyword",
+      "task": "第 1 页正文应包含 fixture-alpha",
+      "pass": true,
+      "reason": "containsAll: ok",
+      "ms": 3,
+      "output": "{\"file\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval/fixtures/sample.pdf\",\"kind\":\"pdf\",\"pages\":2,\"unit\":\"页\",\"range\":\"1-1\",\"returned\":\"1\",\"chars\":147,\"body\":[{\"p\":1,\"c\":147,\"text\":\"dsh-doc"
+    },
+    {
+      "id": "grep-hits-fixture",
+      "task": "搜 fixture 应有命中",
+      "pass": true,
+      "reason": "4 >= 1: ok",
+      "ms": 5,
+      "output": "{\"file\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval/fixtures/sample.pdf\",\"kind\":\"pdf\",\"pages\":2,\"pattern\":\"fixture\",\"regex\":false,\"scanned\":\"2/2\",\"hits\":[{\"p\":1,\"t\":\"dsh-doc-read self-te"
+    },
+    {
+      "id": "grep-no-hits",
+      "task": "搜绝对不存在的词应为 0 命中",
+      "pass": true,
+      "reason": "equals: ok",
+      "ms": 5,
+      "output": "{\"file\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval/fixtures/sample.pdf\",\"kind\":\"pdf\",\"pages\":2,\"pattern\":\"zzz-not-in-this-document-zzz\",\"regex\":false,\"scanned\":\"2/2\",\"hits\":[],\"hitCount"
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：期望 pages=999，实际 2",
+      "pass": false,
+      "reason": "equals: 2 !== 999",
+      "ms": 4,
+      "output": "{\"file\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval/fixtures/sample.pdf\",\"kind\":\"pdf\",\"size\":1222,\"pages\":2,\"unit\":\"页\",\"charsOfFirst\":268,\"sampled\":\"all\",\"outline\":[{\"p\":1,\"c\":147,\"head\""
+    }
+  ]
+}

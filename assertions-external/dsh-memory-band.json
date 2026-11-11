@@ -1,0 +1,46 @@
+{
+  "plugin": "dsh-memory-band",
+  "origin": "third-party",
+  "pluginDir": "@ext/_git_dsh-memory-band",
+  "repo": "https://github.com/13576751971/dsh-memory-band",
+  "testedOn": "",
+  "note": "第三方插件（git clone 临时安装，测完删除）。只有 1 个工具，action 是枚举：recall / remember / stats。只测 recall 与 stats，remember 会写库所以不测。",
+  "assertions": [
+    {
+      "id": "stats-returns-count",
+      "task": "action=stats 应返回记忆条数与用量",
+      "call": { "fn": "memory_band", "args": { "action": "stats" } },
+      "expect": { "jsonPath": "$", "containsAll": ["记忆"] }
+    },
+    {
+      "id": "recall-no-match",
+      "task": "recall 一个不存在的词应明确说没找到",
+      "call": { "fn": "memory_band", "args": { "action": "recall", "query": "zzz-no-such-thing-xyz" } },
+      "expect": { "jsonPath": "$", "containsAll": ["没有找到相关记忆"] }
+    },
+    {
+      "id": "recall-requires-query",
+      "task": "recall 缺 query 应抛错",
+      "call": { "fn": "memory_band", "args": { "action": "recall" } },
+      "expect": { "isError": true }
+    },
+    {
+      "id": "bad-action-rejected",
+      "task": "非法 action 应抛错并说明合法取值",
+      "call": { "fn": "memory_band", "args": { "action": "bogus" } },
+      "expect": { "isError": true }
+    },
+    {
+      "id": "missing-action-rejected",
+      "task": "缺 action 应抛错",
+      "call": { "fn": "memory_band", "args": {} },
+      "expect": { "isError": true }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：stats 期望含一个不可能出现的串",
+      "call": { "fn": "memory_band", "args": { "action": "stats" } },
+      "expect": { "jsonPath": "$", "containsAll": ["<DELIBERATE-FAIL: 不该出现>"] }
+    }
+  ]
+}

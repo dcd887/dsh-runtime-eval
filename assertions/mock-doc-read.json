@@ -1,0 +1,169 @@
+{
+  "plugin": "mock-doc-read",
+  "origin": "mock",
+  "pluginDir": "../fixtures/mock-plugin",
+  "repo": "https://github.com/dcd887/dsh-doc-read",
+  "testedOn": "DSH 0.2.1-alpha.2",
+  "assertions": [
+    {
+      "id": "outline-page-count",
+      "task": "12 页 PDF 的 doc_outline 应返回 12 页",
+      "call": {
+        "fn": "doc_outline",
+        "args": {
+          "path": "fixtures/sample-12p.pdf"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.pages",
+        "equals": 12
+      }
+    },
+    {
+      "id": "outline-returns-title",
+      "task": "doc_outline 应返回 title 字段",
+      "call": {
+        "fn": "doc_outline",
+        "args": {
+          "path": "fixtures/sample-12p.pdf"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.title",
+        "equals": "sample"
+      }
+    },
+    {
+      "id": "outline-missing-file-errors",
+      "task": "文件不存在时应抛错",
+      "call": {
+        "fn": "doc_outline",
+        "args": {
+          "path": "fixtures/missing.pdf"
+        }
+      },
+      "expect": {
+        "isError": true
+      }
+    },
+    {
+      "id": "read-page-range",
+      "task": "读第 3-5 页，应只返回 3 页内容",
+      "call": {
+        "fn": "doc_read",
+        "args": {
+          "path": "fixtures/sample-12p.pdf",
+          "from": 3,
+          "to": 5
+        }
+      },
+      "expect": {
+        "containsAll": [
+          "第 3 页",
+          "第 4 页",
+          "第 5 页"
+        ],
+        "containsNone": [
+          "第 6 页",
+          "第 2 页"
+        ]
+      }
+    },
+    {
+      "id": "read-single-page",
+      "task": "只读第 1 页，应只有第 1 页",
+      "call": {
+        "fn": "doc_read",
+        "args": {
+          "path": "fixtures/sample-12p.pdf",
+          "from": 1
+        }
+      },
+      "expect": {
+        "containsAll": [
+          "第 1 页"
+        ],
+        "containsNone": [
+          "第 2 页"
+        ]
+      }
+    },
+    {
+      "id": "read-out-of-range-clamped",
+      "task": "读第 11-99 页，应只返回 11、12 两页（不抛错）",
+      "call": {
+        "fn": "doc_read",
+        "args": {
+          "path": "fixtures/sample-12p.pdf",
+          "from": 11,
+          "to": 99
+        }
+      },
+      "expect": {
+        "containsAll": [
+          "第 11 页",
+          "第 12 页"
+        ],
+        "containsNone": [
+          "第 13 页"
+        ]
+      }
+    },
+    {
+      "id": "read-invalid-from-errors",
+      "task": "from < 1 时应抛错",
+      "call": {
+        "fn": "doc_read",
+        "args": {
+          "path": "fixtures/sample-12p.pdf",
+          "from": 0
+        }
+      },
+      "expect": {
+        "isError": true
+      }
+    },
+    {
+      "id": "grep-hits",
+      "task": "搜存在的词，命中数应 >= 1",
+      "call": {
+        "fn": "doc_grep",
+        "args": {
+          "path": "fixtures/sample-12p.pdf",
+          "pattern": "税则"
+        }
+      },
+      "expect": {
+        "lengthAtLeast": 1
+      }
+    },
+    {
+      "id": "grep-no-hits",
+      "task": "搜不存在的词，命中数应为 0",
+      "call": {
+        "fn": "doc_grep",
+        "args": {
+          "path": "fixtures/sample-12p.pdf",
+          "pattern": "absent-word"
+        }
+      },
+      "expect": {
+        "isEmpty": true
+      }
+    },
+    {
+      "id": "DELIBERATE-FAIL",
+      "task": "故意失败：期望 999，实际 12",
+      "call": {
+        "fn": "doc_outline",
+        "args": {
+          "path": "fixtures/sample-12p.pdf"
+        }
+      },
+      "expect": {
+        "jsonPath": "$.pages",
+        "equals": 999
+      }
+    }
+  ]
+}
