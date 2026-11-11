@@ -3,7 +3,7 @@
   "origin": "self",
   "repo": "https://github.com/dcd887/dsh-office-qa",
   "testedOn": "DSH 0.2.1-alpha.2",
-  "ranAt": "2026-11-11T09:08:21.158Z",
+  "ranAt": "2026-11-11T09:10:01.510Z",
   "total": 3,
   "passed": 2,
   "failed": 1,
@@ -14,7 +14,7 @@
       "task": "对一个真 docx 应识别为 docx 并给出字体摘要",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 567,
+      "ms": 354,
       "output": "{\"file\":\"sample.docx\",\"kind\":\"docx\",\"fonts\":[{\"font\":\"(inherit)\",\"runs\":3,\"installed\":\"否\",\"embedded\":\"否\",\"verdict\":\"无法解析\",\"suggest\":\"\"}],\"embedded_parts\":0,\"installed_count\":183,\"consistency\":{\"font_k"
     },
     {
@@ -22,15 +22,15 @@
       "task": "文件不存在时应抛错",
       "pass": true,
       "reason": "threw as expected: Command failed: C:\\Python314\\python.exe C:\\Users\\kjds\\.dsh\\dsh-plugin-work\\office-qa\\office_qa2.py C",
-      "ms": 527,
-      "error": "Command failed: C:\\Python314\\python.exe C:\\Users\\kjds\\.dsh\\dsh-plugin-work\\office-qa\\office_qa2.py C:\\nope\\x.docx --json C:\\Users\\kjds\\AppData\\Local\\Temp\\office-qa-KwwpiS\\report.json --html C:\\Users\\kjds\\AppData\\Local\\Temp\\office-qa-KwwpiS\\report.html --quiet\nTraceback (most recent call last):\r\n  File \"C:\\Users\\kjds\\.dsh\\dsh-plugin-work\\office-qa\\office_qa2.py\", line 413, in <module>\r\n    sys.exit(main())\r\n             ~~~~^^\r\n  File \"C:\\Users\\kjds\\.dsh\\dsh-plugin-work\\office-qa\\office_qa2.py\", line 335, in main\r\n    font_runs, sizes, boxes, issues = reader(path, met, reg)\r\n                                      ~~~~~~^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\kjds\\.dsh\\dsh-plugin-work\\office-qa\\office_qa2.py\", line 245, in read_docx\r\n    doc = docx.Document(path)\r\n  File \"C:\\Users\\kjds\\AppData\\Roaming\\Python\\Python314\\site-packages\\docx\\api.py\", line 27, in Document\r\n    document_part = cast(\"DocumentPart\", Package.open(docx).main_document_part)\r\n                                         ~~~~~~~~~~~~^^^^^^\r\n  File \"C:\\Users\\kjds\\AppData\\Roaming\\Python\\Python314\\site-packages\\docx\\opc\\package.py\", line 126, in open\r\n    pkg_reader = PackageReader.from_file(pkg_file)\r\n  File \"C:\\Users\\kjds\\AppData\\Roaming\\Python\\Python314\\site-packages\\docx\\opc\\pkgreader.py\", line 22, in from_file\r\n    phys_reader = PhysPkgReader(pkg_file)\r\n  File \"C:\\Users\\kjds\\AppData\\Roaming\\Python\\Python314\\site-packages\\docx\\opc\\phys_pkg.py\", line 21, in __new__\r\n    raise PackageNotFoundError(\"Package not found at '%s'\" % pkg_file)\r\ndocx.opc.exceptions.PackageNotFoundError: Package not found at 'C:\\nope\\x.docx'\r\n"
+      "ms": 289,
+      "error": "Command failed: C:\\Python314\\python.exe C:\\Users\\kjds\\.dsh\\dsh-plugin-work\\office-qa\\office_qa2.py C:\\nope\\x.docx --json C:\\Users\\kjds\\AppData\\Local\\Temp\\office-qa-2euart\\report.json --html C:\\Users\\kjds\\AppData\\Local\\Temp\\office-qa-2euart\\report.html --quiet\nTraceback (most recent call last):\r\n  File \"C:\\Users\\kjds\\.dsh\\dsh-plugin-work\\office-qa\\office_qa2.py\", line 413, in <module>\r\n    sys.exit(main())\r\n             ~~~~^^\r\n  File \"C:\\Users\\kjds\\.dsh\\dsh-plugin-work\\office-qa\\office_qa2.py\", line 335, in main\r\n    font_runs, sizes, boxes, issues = reader(path, met, reg)\r\n                                      ~~~~~~^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\kjds\\.dsh\\dsh-plugin-work\\office-qa\\office_qa2.py\", line 245, in read_docx\r\n    doc = docx.Document(path)\r\n  File \"C:\\Users\\kjds\\AppData\\Roaming\\Python\\Python314\\site-packages\\docx\\api.py\", line 27, in Document\r\n    document_part = cast(\"DocumentPart\", Package.open(docx).main_document_part)\r\n                                         ~~~~~~~~~~~~^^^^^^\r\n  File \"C:\\Users\\kjds\\AppData\\Roaming\\Python\\Python314\\site-packages\\docx\\opc\\package.py\", line 126, in open\r\n    pkg_reader = PackageReader.from_file(pkg_file)\r\n  File \"C:\\Users\\kjds\\AppData\\Roaming\\Python\\Python314\\site-packages\\docx\\opc\\pkgreader.py\", line 22, in from_file\r\n    phys_reader = PhysPkgReader(pkg_file)\r\n  File \"C:\\Users\\kjds\\AppData\\Roaming\\Python\\Python314\\site-packages\\docx\\opc\\phys_pkg.py\", line 21, in __new__\r\n    raise PackageNotFoundError(\"Package not found at '%s'\" % pkg_file)\r\ndocx.opc.exceptions.PackageNotFoundError: Package not found at 'C:\\nope\\x.docx'\r\n"
     },
     {
       "id": "DELIBERATE-FAIL",
       "task": "故意失败",
       "pass": false,
       "reason": "empty: no",
-      "ms": 560,
+      "ms": 278,
       "output": "{\"file\":\"sample.docx\",\"kind\":\"docx\",\"fonts\":[{\"font\":\"(inherit)\",\"runs\":3,\"installed\":\"否\",\"embedded\":\"否\",\"verdict\":\"无法解析\",\"suggest\":\"\"}],\"embedded_parts\":0,\"installed_count\":183,\"consistency\":{\"font_k"
     }
   ]

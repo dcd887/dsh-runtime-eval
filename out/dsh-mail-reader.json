@@ -3,7 +3,7 @@
   "origin": "self",
   "repo": "",
   "testedOn": "DSH 0.2.1-alpha.2",
-  "ranAt": "2026-11-11T09:08:16.011Z",
+  "ranAt": "2026-11-11T09:09:58.395Z",
   "total": 10,
   "passed": 9,
   "failed": 1,
@@ -14,7 +14,7 @@
       "task": "mail_probe 应连通并返回 ok=true",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 1133,
+      "ms": 760,
       "output": "{\"ok\":true,\"host\":\"imap.163.com\",\"port\":993,\"total\":69,\"readonly\":true,\"id_sent\":true,\"capability\":[\"IMAP4rev1 XLIST SPECIAL-USE ID LITERAL+ STARTTLS APPENDLIMIT=71680000 XAPPLEPUSHSERVICE UIDPLUS X-C"
     },
     {
@@ -22,7 +22,7 @@
       "task": "网易 IMAP 端口应为 993",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 856,
+      "ms": 1870,
       "output": "{\"ok\":true,\"host\":\"imap.163.com\",\"port\":993,\"total\":69,\"readonly\":true,\"id_sent\":true,\"capability\":[\"IMAP4rev1 XLIST SPECIAL-USE ID LITERAL+ STARTTLS APPENDLIMIT=71680000 XAPPLEPUSHSERVICE UIDPLUS X-C"
     },
     {
@@ -30,7 +30,7 @@
       "task": "应是只读模式（readonly=true）",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 806,
+      "ms": 674,
       "output": "{\"ok\":true,\"host\":\"imap.163.com\",\"port\":993,\"total\":69,\"readonly\":true,\"id_sent\":true,\"capability\":[\"IMAP4rev1 XLIST SPECIAL-USE ID LITERAL+ STARTTLS APPENDLIMIT=71680000 XAPPLEPUSHSERVICE UIDPLUS X-C"
     },
     {
@@ -38,7 +38,7 @@
       "task": "mail_list 应返回 ok=true",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 950,
+      "ms": 839,
       "redacted": true
     },
     {
@@ -46,7 +46,7 @@
       "task": "days=9999 应被 clamp 到上限 365",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 852,
+      "ms": 693,
       "redacted": true
     },
     {
@@ -54,7 +54,7 @@
       "task": "mail_search 无关键词应直接抛错（不发 IMAP 请求）",
       "pass": true,
       "reason": "threw as expected: mail_search needs \"subject\" and/or \"from\".",
-      "ms": 1,
+      "ms": 0,
       "error": "mail_search needs \"subject\" and/or \"from\"."
     },
     {
@@ -70,7 +70,7 @@
       "task": "mail_read 的 uid 不存在应抛错",
       "pass": true,
       "reason": "threw as expected: no header data returned for uid 999999999",
-      "ms": 710,
+      "ms": 1491,
       "error": "no header data returned for uid 999999999"
     },
     {
@@ -78,7 +78,7 @@
       "task": "搜绝对不存在的主题应为 0 封",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 796,
+      "ms": 623,
       "redacted": true
     },
     {
@@ -86,7 +86,7 @@
       "task": "故意失败：uid 非数字本应抛错，这里却期望 ok=true",
       "pass": false,
       "reason": "unexpected error: mail_read needs a numeric uid from mail_list.",
-      "ms": 1,
+      "ms": 0,
       "error": "mail_read needs a numeric uid from mail_list."
     }
   ]

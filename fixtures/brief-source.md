@@ -16,7 +16,7 @@
 | `task` | string（必填） | 这一包要支撑的任务，写进任务包标题 |
 | `files` | array（必填） | `[{ path, hint? }]`；`path` 为绝对路径，`hint` 为空则只放该文件的结构摘要 |
 | `budgetTokens` | integer | token 预算上限，默认取插件配置（出厂 8000，最小 1500） |
-| `outDir` | string | 输出目录，默认取插件配置（出厂 `C:\Users\kjds\Desktop\DSH输出\briefs`） |
+| `outDir` | string | 输出目录，默认取插件配置（出厂 `C:\Users\<user>\Desktop\DSH输出\briefs`） |
 
 返回（**不含任务包全文**，避免"省下来的又还回去"）：
 
@@ -68,7 +68,7 @@
 
 | 键 | 默认 | 说明 |
 |---|---|---|
-| `outDir` | 空 → `C:\Users\kjds\Desktop\DSH输出\briefs` | 任务包默认输出目录 |
+| `outDir` | 空 → `C:\Users\<user>\Desktop\DSH输出\briefs` | 任务包默认输出目录 |
 | `budgetTokens` | 8000 | 默认 token 预算（最小 1500） |
 | `subagentProvider` | `spawn` | `ctx.subagents.start(name, ...)` 用的 provider 名；不在注册表里时自动回退到首个可用 provider |
 | `timeoutSeconds` | 600 | 等子代理的上限 |
@@ -101,5 +101,5 @@
 用法（node 路径见 `$env:DSH_*` 所在运行时）：
 
 ```powershell
-node _selftest\sessioncheck.mjs "C:\Users\kjds\.dsh\sessions\--C-Users-kjds-Desktop--\<sessionId>\session.v4.jsonl.zstd" "关盾146重跑_修复后.md"
+node _selftest\sessioncheck.mjs "C:\Users\<user>\.dsh\sessions\--C-Users-user-Desktop--\<sessionId>\session.v4.jsonl.zstd" "关盾146重跑_修复后.md"
 ```

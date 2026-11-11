@@ -3,7 +3,7 @@
   "origin": "self",
   "repo": "https://github.com/dcd887/dsh-brief-pack",
   "testedOn": "DSH 0.2.1-alpha.2",
-  "ranAt": "2026-11-11T09:08:41.239Z",
+  "ranAt": "2026-11-11T09:09:47.603Z",
   "total": 10,
   "passed": 9,
   "failed": 1,
@@ -14,24 +14,24 @@
       "task": "传 1 个文件，filesPacked 应有 1 项",
       "pass": true,
       "reason": "length 1 >= 1: ok",
-      "ms": 8,
-      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t1-20261111-170841.md\",\"bytes\":5274,\"approxTokens\":1045,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
+      "ms": 11,
+      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t1-20261111-170947.md\",\"bytes\":5278,\"approxTokens\":1046,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
     },
     {
       "id": "pack-token-under-budget",
       "task": "生成的包不应超过预算（含 20% 估算余量）",
       "pass": true,
-      "reason": "1045 <= 2400: ok",
-      "ms": 3,
-      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t2-20261111-170841.md\",\"bytes\":5274,\"approxTokens\":1045,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
+      "reason": "1046 <= 2400: ok",
+      "ms": 5,
+      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t2-20261111-170947.md\",\"bytes\":5278,\"approxTokens\":1046,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
     },
     {
       "id": "pack-budget-echoed",
       "task": "budgetTokens 应原样回显",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 4,
-      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t3-20261111-170841.md\",\"bytes\":6792,\"approxTokens\":1391,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
+      "ms": 3,
+      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t3-20261111-170947.md\",\"bytes\":6796,\"approxTokens\":1392,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
     },
     {
       "id": "pack-has-brief-path",
@@ -39,55 +39,55 @@
       "pass": true,
       "reason": "containsAll: ok",
       "ms": 4,
-      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t4-20261111-170841.md\",\"bytes\":6792,\"approxTokens\":1391,\"budgetTokens\":8000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
+      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t4-20261111-170947.md\",\"bytes\":6796,\"approxTokens\":1392,\"budgetTokens\":8000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
     },
     {
       "id": "pack-no-truncation-small-file",
       "task": "6 KB 文件在 8000 预算下不应截断",
       "pass": true,
       "reason": "empty: ok",
-      "ms": 3,
-      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t5-20261111-170841.md\",\"bytes\":6792,\"approxTokens\":1391,\"budgetTokens\":8000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
+      "ms": 5,
+      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t5-20261111-170947.md\",\"bytes\":6796,\"approxTokens\":1392,\"budgetTokens\":8000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
     },
     {
       "id": "pack-matched-terms-nonempty",
       "task": "有 hint 时应记录命中的关键词",
       "pass": true,
       "reason": "length 1 >= 1: ok",
-      "ms": 3,
-      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t6-20261111-170841.md\",\"bytes\":5375,\"approxTokens\":1066,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
+      "ms": 4,
+      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t6-20261111-170947.md\",\"bytes\":5379,\"approxTokens\":1067,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
     },
     {
       "id": "pack-token-note-present",
       "task": "应标注 token 是估算值",
       "pass": true,
       "reason": "containsAll: ok",
-      "ms": 3,
-      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t7-20261111-170841.md\",\"bytes\":6792,\"approxTokens\":1391,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
+      "ms": 6,
+      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t7-20261111-170947.md\",\"bytes\":6796,\"approxTokens\":1392,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
     },
     {
       "id": "pack-hint-method-recorded",
       "task": "有 hint 时 method 应为 hint",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 3,
-      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t8-20261111-170841.md\",\"bytes\":5274,\"approxTokens\":1045,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
+      "ms": 2,
+      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t8-20261111-170947.md\",\"bytes\":5278,\"approxTokens\":1046,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 toke"
     },
     {
       "id": "pack-missing-file-marked-missing",
       "task": "文件不存在时不抛错，而是在 filesPacked[0].kind 标 missing",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 1,
-      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t9-20261111-170841.md\",\"bytes\":1152,\"approxTokens\":241,\"budgetTokens\":8000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 token"
+      "ms": 2,
+      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t9-20261111-170947.md\",\"bytes\":1152,\"approxTokens\":241,\"budgetTokens\":8000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 token"
     },
     {
       "id": "DELIBERATE-FAIL",
       "task": "故意失败：期望 approxTokens=99999",
       "pass": false,
-      "reason": "equals: 1391 !== 99999",
+      "reason": "equals: 1392 !== 99999",
       "ms": 3,
-      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t10-20261111-170841.md\",\"bytes\":6793,\"approxTokens\":1391,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 tok"
+      "output": "{\"briefPath\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\DSH输出\\\\02_项目\\\\dsh-runtime-eval\\\\out\\\\briefs\\\\t10-20261111-170947.md\",\"bytes\":6797,\"approxTokens\":1392,\"budgetTokens\":2000,\"tokenEstimateNote\":\"估算：汉字 ≈ 1/1.5 tok"
     }
   ]
 }

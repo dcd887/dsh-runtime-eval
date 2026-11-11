@@ -3,7 +3,7 @@
   "origin": "self",
   "repo": "https://github.com/dcd887/dsh-customs-kb-audit",
   "testedOn": "DSH 0.2.1-alpha.2",
-  "ranAt": "2026-11-11T09:08:09.027Z",
+  "ranAt": "2026-11-11T09:09:50.708Z",
   "total": 8,
   "passed": 7,
   "failed": 1,
@@ -14,7 +14,7 @@
       "task": "知识库共 1956 条",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 510,
+      "ms": 628,
       "output": "{\"total\":1956,\"dataDir\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\关盾Agent_ModelScope_上传版_20261010\\\\data\",\"sourceSha256_16\":\"28f839ad28d607bb\",\"shape\":\"classification_decisions: dict, single list value under 'decisio"
     },
     {
@@ -22,7 +22,7 @@
       "task": "官方文号覆盖率应为 100%",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 496,
+      "ms": 606,
       "output": "{\"total\":1956,\"dataDir\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\关盾Agent_ModelScope_上传版_20261010\\\\data\",\"sourceSha256_16\":\"28f839ad28d607bb\",\"shape\":\"classification_decisions: dict, single list value under 'decisio"
     },
     {
@@ -30,7 +30,7 @@
       "task": "应报告数据结构 shape",
       "pass": true,
       "reason": "containsAll: ok",
-      "ms": 449,
+      "ms": 450,
       "output": "{\"total\":1956,\"dataDir\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\关盾Agent_ModelScope_上传版_20261010\\\\data\",\"sourceSha256_16\":\"28f839ad28d607bb\",\"shape\":\"classification_decisions: dict, single list value under 'decisio"
     },
     {
@@ -38,7 +38,7 @@
       "task": "两次运行应字节一致",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 453,
+      "ms": 301,
       "output": "{\"total\":1956,\"dataDir\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\关盾Agent_ModelScope_上传版_20261010\\\\data\",\"sourceSha256_16\":\"28f839ad28d607bb\",\"shape\":\"classification_decisions: dict, single list value under 'decisio"
     },
     {
@@ -46,7 +46,7 @@
       "task": "质量审计的总数应和结构审计一致",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 414,
+      "ms": 219,
       "output": "{\"total\":1956,\"dataDir\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\关盾Agent_ModelScope_上传版_20261010\\\\data\",\"sourceSha256_16\":\"28f839ad28d607bb\",\"sourceBytes\":1434879,\"shape\":\"dict[decisions] list, 1956 records\",\"gener"
     },
     {
@@ -54,7 +54,7 @@
       "task": "应检测到模板化描述",
       "pass": true,
       "reason": "72.6 >= 50: ok",
-      "ms": 378,
+      "ms": 205,
       "output": "{\"total\":1956,\"dataDir\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\关盾Agent_ModelScope_上传版_20261010\\\\data\",\"sourceSha256_16\":\"28f839ad28d607bb\",\"sourceBytes\":1434879,\"shape\":\"dict[decisions] list, 1956 records\",\"gener"
     },
     {
@@ -62,7 +62,7 @@
       "task": "应输出 year 字段的空值统计（0 空 / 1956 有）",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 349,
+      "ms": 249,
       "output": "{\"total\":1956,\"dataDir\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\关盾Agent_ModelScope_上传版_20261010\\\\data\",\"sourceSha256_16\":\"28f839ad28d607bb\",\"sourceBytes\":1434879,\"shape\":\"dict[decisions] list, 1956 records\",\"gener"
     },
     {
@@ -70,7 +70,7 @@
       "task": "故意失败",
       "pass": false,
       "reason": "equals: 1956 !== 99999",
-      "ms": 426,
+      "ms": 293,
       "output": "{\"total\":1956,\"dataDir\":\"C:\\\\Users\\\\kjds\\\\Desktop\\\\关盾Agent_ModelScope_上传版_20261010\\\\data\",\"sourceSha256_16\":\"28f839ad28d607bb\",\"shape\":\"classification_decisions: dict, single list value under 'decisio"
     }
   ]

@@ -149,14 +149,15 @@ out: out/dsh-doc-read.json
 ```json
 {
   "plugin": "dsh-doc-read",
-  "pluginDir": "C:/Users/kjds/.dsh/profiles/web/node_modules/@local/dsh-doc-read3",
+  "origin": "self",
+  "pluginDir": "@local/dsh-doc-read3",
   "repo": "https://github.com/dcd887/dsh-doc-read",
   "testedOn": "DSH 0.2.1-alpha.2",
   "assertions": [
     {
       "id": "outline-page-count",
       "task": "2 页 PDF 的 doc_outline 应返回 pages=2",
-      "call": { "fn": "doc_outline", "args": { "path": "…/sample.pdf" } },
+      "call": { "fn": "doc_outline", "args": { "path": "${ROOT}/fixtures/sample.pdf" } },
       "expect": { "jsonPath": "$.pages", "equals": 2 }
     }
   ]

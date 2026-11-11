@@ -3,7 +3,7 @@
   "origin": "self",
   "repo": "https://github.com/dcd887/dsh-mcpack",
   "testedOn": "DSH 0.2.1-alpha.2",
-  "ranAt": "2026-11-11T09:08:19.404Z",
+  "ranAt": "2026-11-11T09:10:00.529Z",
   "total": 7,
   "passed": 6,
   "failed": 1,
@@ -14,7 +14,7 @@
       "task": "列表应返回 ok=true",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 518,
+      "ms": 332,
       "output": "{\"ok\":true,\"instance_count\":13,\"valid_count\":12,\"instances\":[{\"dir_name\":\"1.20.1-Forge_47.4.23\",\"valid\":true,\"reason\":null,\"mc_version\":\"1.20.1\",\"loader\":\"Forge\",\"loader_version\":\"47.4.23\",\"mod_count\""
     },
     {
@@ -22,7 +22,7 @@
       "task": "应有 13 个实例目录",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 494,
+      "ms": 283,
       "output": "{\"ok\":true,\"instance_count\":13,\"valid_count\":12,\"instances\":[{\"dir_name\":\"1.20.1-Forge_47.4.23\",\"valid\":true,\"reason\":null,\"mc_version\":\"1.20.1\",\"loader\":\"Forge\",\"loader_version\":\"47.4.23\",\"mod_count\""
     },
     {
@@ -30,7 +30,7 @@
       "task": "应有 12 个有效实例",
       "pass": true,
       "reason": "equals: ok",
-      "ms": 465,
+      "ms": 293,
       "output": "{\"ok\":true,\"instance_count\":13,\"valid_count\":12,\"instances\":[{\"dir_name\":\"1.20.1-Forge_47.4.23\",\"valid\":true,\"reason\":null,\"mc_version\":\"1.20.1\",\"loader\":\"Forge\",\"loader_version\":\"47.4.23\",\"mod_count\""
     },
     {
@@ -38,7 +38,7 @@
       "task": "instances 数组不应为空",
       "pass": true,
       "reason": "length 13 >= 1: ok",
-      "ms": 482,
+      "ms": 279,
       "output": "{\"ok\":true,\"instance_count\":13,\"valid_count\":12,\"instances\":[{\"dir_name\":\"1.20.1-Forge_47.4.23\",\"valid\":true,\"reason\":null,\"mc_version\":\"1.20.1\",\"loader\":\"Forge\",\"loader_version\":\"47.4.23\",\"mod_count\""
     },
     {
@@ -46,7 +46,7 @@
       "task": "第一个实例应有 mc_version",
       "pass": true,
       "reason": "length 6 >= 1: ok",
-      "ms": 465,
+      "ms": 296,
       "output": "{\"ok\":true,\"instance_count\":13,\"valid_count\":12,\"instances\":[{\"dir_name\":\"1.20.1-Forge_47.4.23\",\"valid\":true,\"reason\":null,\"mc_version\":\"1.20.1\",\"loader\":\"Forge\",\"loader_version\":\"47.4.23\",\"mod_count\""
     },
     {
@@ -54,7 +54,7 @@
       "task": "第一个实例应有 loader",
       "pass": true,
       "reason": "length 5 >= 1: ok",
-      "ms": 432,
+      "ms": 296,
       "output": "{\"ok\":true,\"instance_count\":13,\"valid_count\":12,\"instances\":[{\"dir_name\":\"1.20.1-Forge_47.4.23\",\"valid\":true,\"reason\":null,\"mc_version\":\"1.20.1\",\"loader\":\"Forge\",\"loader_version\":\"47.4.23\",\"mod_count\""
     },
     {
@@ -62,7 +62,7 @@
       "task": "故意失败",
       "pass": false,
       "reason": "equals: 13 !== -1",
-      "ms": 442,
+      "ms": 297,
       "output": "{\"ok\":true,\"instance_count\":13,\"valid_count\":12,\"instances\":[{\"dir_name\":\"1.20.1-Forge_47.4.23\",\"valid\":true,\"reason\":null,\"mc_version\":\"1.20.1\",\"loader\":\"Forge\",\"loader_version\":\"47.4.23\",\"mod_count\""
     }
   ]

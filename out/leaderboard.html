@@ -139,7 +139,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">schema-version-1</td>
         <td>payload 的 schemaVersion 应为 1</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">20</td>
+        <td class="num">28</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
@@ -160,7 +160,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">dataset-schema-version</td>
         <td>读到的 data.json 应含 schemaVersion=1</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">1</td>
+        <td class="num">0</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
@@ -195,28 +195,28 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">github-sorted-by-pushed-at</td>
         <td>列表应按 pushed_at 降序，最新的 beta 排第一</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">0</td>
+        <td class="num">1</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">github-public-count-2</td>
         <td>两个都是 public，publicCount 应为 2</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">1</td>
+        <td class="num">0</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">github-per-page-stopped</td>
         <td>2 条少于 perPage=10，分页应只请求 1 页</td>
         <td class="mono dim">length 1 &gt;= 1: ok</td>
-        <td class="num">1</td>
+        <td class="num">0</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">atomgit-degrades-not-crashes</td>
         <td>无 AtomGit fixture 时应降级为 unavailable 而不是抛错</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">0</td>
+        <td class="num">1</td>
       </tr>
 <tr class="self">
         <td class="mark">自检</td>
@@ -249,21 +249,21 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">outline-page-count</td>
         <td>2 页 PDF 的 doc_outline 应返回 pages=2</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">516</td>
+        <td class="num">538</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">outline-kind-pdf</td>
         <td>kind 应为 pdf</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">6</td>
+        <td class="num">5</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">outline-two-pages</td>
         <td>outline 数组应有 2 项</td>
         <td class="mono dim">length 2 &gt;= 2: ok</td>
-        <td class="num">5</td>
+        <td class="num">4</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
@@ -284,14 +284,14 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">read-range-1-1</td>
         <td>读第 1 页，range 应为 1-1，returned 应为 1</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">5</td>
+        <td class="num">4</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">read-body-length</td>
         <td>读第 1 页时 body 应只有 1 项</td>
         <td class="mono dim">length 1 &gt;= 1: ok</td>
-        <td class="num">4</td>
+        <td class="num">2</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
@@ -305,7 +305,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">grep-hits-fixture</td>
         <td>搜 fixture 应有命中</td>
         <td class="mono dim">4 &gt;= 1: ok</td>
-        <td class="num">5</td>
+        <td class="num">3</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
@@ -332,7 +332,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
       <td class="num ok">100%</td>
       <td class="num dim">9/10</td>
       <td class="num dim">90%</td>
-      <td class="num dim">3</td>
+      <td class="num dim">4</td>
       <td class="repo"><a href="https://github.com/dcd887/dsh-brief-pack" target="_blank" rel="noreferrer">dcd887/dsh-brief-pack</a></td>
     </tr>
     <tr class="expand"><td colspan="8">
@@ -345,56 +345,56 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">pack-files-count</td>
         <td>传 1 个文件，filesPacked 应有 1 项</td>
         <td class="mono dim">length 1 &gt;= 1: ok</td>
-        <td class="num">8</td>
+        <td class="num">11</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">pack-token-under-budget</td>
         <td>生成的包不应超过预算（含 20% 估算余量）</td>
-        <td class="mono dim">1038 &lt;= 2400: ok</td>
-        <td class="num">2</td>
+        <td class="mono dim">1046 &lt;= 2400: ok</td>
+        <td class="num">5</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">pack-budget-echoed</td>
         <td>budgetTokens 应原样回显</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">4</td>
+        <td class="num">3</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">pack-has-brief-path</td>
         <td>应返回 briefPath</td>
         <td class="mono dim">containsAll: ok</td>
-        <td class="num">3</td>
+        <td class="num">4</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">pack-no-truncation-small-file</td>
         <td>6 KB 文件在 8000 预算下不应截断</td>
         <td class="mono dim">empty: ok</td>
-        <td class="num">3</td>
+        <td class="num">5</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">pack-matched-terms-nonempty</td>
         <td>有 hint 时应记录命中的关键词</td>
         <td class="mono dim">length 1 &gt;= 1: ok</td>
-        <td class="num">3</td>
+        <td class="num">4</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">pack-token-note-present</td>
         <td>应标注 token 是估算值</td>
         <td class="mono dim">containsAll: ok</td>
-        <td class="num">3</td>
+        <td class="num">6</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">pack-hint-method-recorded</td>
         <td>有 hint 时 method 应为 hint</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">3</td>
+        <td class="num">2</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
@@ -407,8 +407,8 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mark">自检</td>
         <td class="mono">DELIBERATE-FAIL</td>
         <td>故意失败：期望 approxTokens=99999</td>
-        <td class="mono dim">equals: 1384 !== 99999</td>
-        <td class="num">2</td>
+        <td class="mono dim">equals: 1392 !== 99999</td>
+        <td class="num">3</td>
       </tr>
     </tbody>
   </table>
@@ -421,7 +421,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
       <td class="num ok">100%</td>
       <td class="num dim">9/10</td>
       <td class="num dim">90%</td>
-      <td class="num dim">716</td>
+      <td class="num dim">684</td>
       <td class="repo"><span class="dim">—</span></td>
     </tr>
     <tr class="expand"><td colspan="8">
@@ -434,35 +434,35 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">probe-ok</td>
         <td>mail_probe 应连通并返回 ok=true</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">867</td>
+        <td class="num">760</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">probe-port-993</td>
         <td>网易 IMAP 端口应为 993</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">2755</td>
+        <td class="num">1870</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">probe-readonly</td>
         <td>应是只读模式（readonly=true）</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">715</td>
+        <td class="num">674</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">list-ok</td>
         <td>mail_list 应返回 ok=true</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">880</td>
+        <td class="num">839</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">list-days-clamped-to-365</td>
         <td>days=9999 应被 clamp 到上限 365</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">731</td>
+        <td class="num">693</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
@@ -483,14 +483,14 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">read-missing-uid-errors</td>
         <td>mail_read 的 uid 不存在应抛错</td>
         <td class="mono dim">threw as expected: no header data returned for uid 999999999</td>
-        <td class="num">716</td>
+        <td class="num">1491</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">search-nonsense-zero</td>
         <td>搜绝对不存在的主题应为 0 封</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">690</td>
+        <td class="num">623</td>
       </tr>
 <tr class="self">
         <td class="mark">自检</td>
@@ -565,7 +565,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">read-invalid-from-errors</td>
         <td>from &lt; 1 时应抛错</td>
         <td class="mono dim">threw as expected: from must be &gt;= 1</td>
-        <td class="num">1</td>
+        <td class="num">0</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
@@ -681,7 +681,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
       <td class="num ok">100%</td>
       <td class="num dim">7/8</td>
       <td class="num dim">87.5%</td>
-      <td class="num dim">380</td>
+      <td class="num dim">297</td>
       <td class="repo"><a href="https://github.com/dcd887/dsh-customs-kb-audit" target="_blank" rel="noreferrer">dcd887/dsh-customs-kb-audit</a></td>
     </tr>
     <tr class="expand"><td colspan="8">
@@ -694,56 +694,56 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">audit-total-1956</td>
         <td>知识库共 1956 条</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">441</td>
+        <td class="num">628</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">audit-coverage-official-100</td>
         <td>官方文号覆盖率应为 100%</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">380</td>
+        <td class="num">606</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">audit-has-shape</td>
         <td>应报告数据结构 shape</td>
         <td class="mono dim">containsAll: ok</td>
-        <td class="num">389</td>
+        <td class="num">450</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">audit-rerun-identical</td>
         <td>两次运行应字节一致</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">393</td>
+        <td class="num">301</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">quality-total-match</td>
         <td>质量审计的总数应和结构审计一致</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">305</td>
+        <td class="num">219</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">quality-template-detected</td>
         <td>应检测到模板化描述</td>
         <td class="mono dim">72.6 &gt;= 50: ok</td>
-        <td class="num">290</td>
+        <td class="num">205</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">quality-has-null-rates</td>
         <td>应输出 year 字段的空值统计（0 空 / 1956 有）</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">289</td>
+        <td class="num">249</td>
       </tr>
 <tr class="self">
         <td class="mark">自检</td>
         <td class="mono">DELIBERATE-FAIL</td>
         <td>故意失败</td>
         <td class="mono dim">equals: 1956 !== 99999</td>
-        <td class="num">379</td>
+        <td class="num">293</td>
       </tr>
     </tbody>
   </table>
@@ -831,7 +831,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
       <td class="num ok">100%</td>
       <td class="num dim">7/8</td>
       <td class="num dim">87.5%</td>
-      <td class="num dim">17</td>
+      <td class="num dim">12</td>
       <td class="repo"><a href="https://github.com/dcd887/dsh-record-search" target="_blank" rel="noreferrer">dcd887/dsh-record-search</a></td>
     </tr>
     <tr class="expand"><td colspan="8">
@@ -844,56 +844,56 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">search-ok</td>
         <td>搜索应返回 ok=true</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">425</td>
+        <td class="num">365</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">search-indexed</td>
         <td>索引应已建立</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">22</td>
+        <td class="num">14</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">search-sessions-matched</td>
         <td>搜「测试」应命中会话</td>
         <td class="mono dim">181 &gt;= 1: ok</td>
-        <td class="num">16</td>
+        <td class="num">9</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">search-total-hits</td>
         <td>命中总数应 &gt;= 1</td>
         <td class="mono dim">1704 &gt;= 1: ok</td>
-        <td class="num">17</td>
+        <td class="num">12</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">search-index-sessions</td>
         <td>索引里会话数应 &gt;= 1</td>
         <td class="mono dim">257 &gt;= 1: ok</td>
-        <td class="num">26</td>
+        <td class="num">18</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">search-took-ms</td>
         <td>应返回耗时</td>
-        <td class="mono dim">13 &gt;= 0: ok</td>
-        <td class="num">13</td>
+        <td class="mono dim">11 &gt;= 0: ok</td>
+        <td class="num">11</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">search-nonsense-zero</td>
         <td>搜不存在的词应为 0 命中</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">8</td>
+        <td class="num">5</td>
       </tr>
 <tr class="self">
         <td class="mark">自检</td>
         <td class="mono">DELIBERATE-FAIL</td>
         <td>故意失败</td>
         <td class="mono dim">equals: 181 !== -1</td>
-        <td class="num">14</td>
+        <td class="num">10</td>
       </tr>
     </tbody>
   </table>
@@ -906,7 +906,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
       <td class="num ok">100%</td>
       <td class="num dim">6/7</td>
       <td class="num dim">85.7%</td>
-      <td class="num dim">410</td>
+      <td class="num dim">296</td>
       <td class="repo"><a href="https://github.com/dcd887/dsh-mcpack" target="_blank" rel="noreferrer">dcd887/dsh-mcpack</a></td>
     </tr>
     <tr class="expand"><td colspan="8">
@@ -919,49 +919,49 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">list-ok</td>
         <td>列表应返回 ok=true</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">662</td>
+        <td class="num">332</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">list-instance-count</td>
         <td>应有 13 个实例目录</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">409</td>
+        <td class="num">283</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">list-valid-count</td>
         <td>应有 12 个有效实例</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">410</td>
+        <td class="num">293</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">list-instances-nonempty</td>
         <td>instances 数组不应为空</td>
         <td class="mono dim">length 13 &gt;= 1: ok</td>
-        <td class="num">399</td>
+        <td class="num">279</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">list-first-has-mc-version</td>
         <td>第一个实例应有 mc_version</td>
         <td class="mono dim">length 6 &gt;= 1: ok</td>
-        <td class="num">407</td>
+        <td class="num">296</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">list-first-has-loader</td>
         <td>第一个实例应有 loader</td>
         <td class="mono dim">length 5 &gt;= 1: ok</td>
-        <td class="num">413</td>
+        <td class="num">296</td>
       </tr>
 <tr class="self">
         <td class="mark">自检</td>
         <td class="mono">DELIBERATE-FAIL</td>
         <td>故意失败</td>
         <td class="mono dim">equals: 13 !== -1</td>
-        <td class="num">417</td>
+        <td class="num">297</td>
       </tr>
     </tbody>
   </table>
@@ -1096,7 +1096,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
       <td class="num ok">100%</td>
       <td class="num dim">2/3</td>
       <td class="num dim">66.7%</td>
-      <td class="num dim">415</td>
+      <td class="num dim">289</td>
       <td class="repo"><a href="https://github.com/dcd887/dsh-office-qa" target="_blank" rel="noreferrer">dcd887/dsh-office-qa</a></td>
     </tr>
     <tr class="expand"><td colspan="8">
@@ -1109,21 +1109,21 @@ footer code{font-family:ui-monospace,Consolas,monospace}
         <td class="mono">qa-docx-returns-json</td>
         <td>对一个真 docx 应识别为 docx 并给出字体摘要</td>
         <td class="mono dim">equals: ok</td>
-        <td class="num">496</td>
+        <td class="num">354</td>
       </tr>
 <tr class="pass">
         <td class="mark">通过</td>
         <td class="mono">qa-missing-file-errors</td>
         <td>文件不存在时应抛错</td>
         <td class="mono dim">threw as expected: Command failed: C:\Python314\python.exe C:\Users\kjds\.dsh\dsh-plugin-work\office-qa\office_qa2.py C</td>
-        <td class="num">415</td>
+        <td class="num">289</td>
       </tr>
 <tr class="self">
         <td class="mark">自检</td>
         <td class="mono">DELIBERATE-FAIL</td>
         <td>故意失败</td>
         <td class="mono dim">empty: no</td>
-        <td class="num">390</td>
+        <td class="num">278</td>
       </tr>
     </tbody>
   </table>
@@ -1140,7 +1140,7 @@ footer code{font-family:ui-monospace,Consolas,monospace}
 </div>
 
 <footer>
-  生成时间：2026-11-11 16:42　·　数据源：<code>out/*.json</code>（13 个结果文件）　·　测试环境：DSH 0.2.1-alpha.2<br>
+  生成时间：2026-11-11 17:10　·　数据源：<code>out/*.json</code>（13 个结果文件）　·　测试环境：DSH 0.2.1-alpha.2<br>
   复现：<code>npm run eval:all</code> 然后 <code>npm run leaderboard</code>　·　数字全部由脚本从 JSON 现算，无手填
 </footer>
 </div>

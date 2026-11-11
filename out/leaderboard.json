@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T08:42:08.136Z",
+  "generatedAt": "2026-11-11T09:10:02.282Z",
   "aggregate": {
     "realTotal": 96,
     "realPassed": 96,
@@ -24,7 +24,7 @@
       "origin": "self",
       "repo": "",
       "testedOn": "DSH 0.2.1-alpha.2",
-      "ranAt": "2026-11-11T08:29:09.113Z",
+      "ranAt": "2026-11-11T09:10:02.176Z",
       "rawTotal": 13,
       "rawPassed": 12,
       "rawRate": 92.3076923076923,
@@ -34,7 +34,7 @@
       "realFailed": [],
       "effRate": 100,
       "medianMs": 1,
-      "totalMs": 27,
+      "totalMs": 34,
       "warnings": []
     },
     {
@@ -43,7 +43,7 @@
       "origin": "self",
       "repo": "https://github.com/dcd887/dsh-doc-read",
       "testedOn": "DSH 0.2.1-alpha.2",
-      "ranAt": "2026-11-11T08:28:56.227Z",
+      "ranAt": "2026-11-11T09:09:51.358Z",
       "rawTotal": 11,
       "rawPassed": 10,
       "rawRate": 90.9090909090909,
@@ -53,7 +53,7 @@
       "realFailed": [],
       "effRate": 100,
       "medianMs": 4,
-      "totalMs": 556,
+      "totalMs": 571,
       "warnings": []
     },
     {
@@ -62,7 +62,7 @@
       "origin": "self",
       "repo": "https://github.com/dcd887/dsh-brief-pack",
       "testedOn": "DSH 0.2.1-alpha.2",
-      "ranAt": "2026-11-11T08:28:52.649Z",
+      "ranAt": "2026-11-11T09:09:47.603Z",
       "rawTotal": 10,
       "rawPassed": 9,
       "rawRate": 90,
@@ -71,8 +71,8 @@
       "realPassed": 9,
       "realFailed": [],
       "effRate": 100,
-      "medianMs": 3,
-      "totalMs": 33,
+      "medianMs": 4,
+      "totalMs": 45,
       "warnings": []
     },
     {
@@ -81,7 +81,7 @@
       "origin": "self",
       "repo": "",
       "testedOn": "DSH 0.2.1-alpha.2",
-      "ranAt": "2026-11-11T08:29:03.677Z",
+      "ranAt": "2026-11-11T09:09:58.395Z",
       "rawTotal": 10,
       "rawPassed": 9,
       "rawRate": 90,
@@ -90,8 +90,8 @@
       "realPassed": 9,
       "realFailed": [],
       "effRate": 100,
-      "medianMs": 715.5,
-      "totalMs": 7354,
+      "medianMs": 683.5,
+      "totalMs": 6950,
       "warnings": []
     },
     {
@@ -100,7 +100,7 @@
       "origin": "mock",
       "repo": "https://github.com/dcd887/dsh-doc-read",
       "testedOn": "DSH 0.2.1-alpha.2",
-      "ranAt": "2026-11-11T08:29:09.003Z",
+      "ranAt": "2026-11-11T09:10:02.086Z",
       "rawTotal": 10,
       "rawPassed": 9,
       "rawRate": 90,
@@ -110,7 +110,7 @@
       "realFailed": [],
       "effRate": 100,
       "medianMs": 0,
-      "totalMs": 1,
+      "totalMs": 0,
       "warnings": []
     },
     {
@@ -138,7 +138,7 @@
       "origin": "self",
       "repo": "https://github.com/dcd887/dsh-customs-kb-audit",
       "testedOn": "DSH 0.2.1-alpha.2",
-      "ranAt": "2026-11-11T08:28:55.597Z",
+      "ranAt": "2026-11-11T09:09:50.708Z",
       "rawTotal": 8,
       "rawPassed": 7,
       "rawRate": 87.5,
@@ -147,8 +147,8 @@
       "realPassed": 7,
       "realFailed": [],
       "effRate": 100,
-      "medianMs": 379.5,
-      "totalMs": 2866,
+      "medianMs": 297,
+      "totalMs": 2951,
       "warnings": []
     },
     {
@@ -176,7 +176,7 @@
       "origin": "self",
       "repo": "https://github.com/dcd887/dsh-record-search",
       "testedOn": "DSH 0.2.1-alpha.2",
-      "ranAt": "2026-11-11T08:29:08.897Z",
+      "ranAt": "2026-11-11T09:10:02.012Z",
       "rawTotal": 8,
       "rawPassed": 7,
       "rawRate": 87.5,
@@ -185,8 +185,8 @@
       "realPassed": 7,
       "realFailed": [],
       "effRate": 100,
-      "medianMs": 16.5,
-      "totalMs": 541,
+      "medianMs": 11.5,
+      "totalMs": 444,
       "warnings": []
     },
     {
@@ -195,7 +195,7 @@
       "origin": "self",
       "repo": "https://github.com/dcd887/dsh-mcpack",
       "testedOn": "DSH 0.2.1-alpha.2",
-      "ranAt": "2026-11-11T08:29:06.894Z",
+      "ranAt": "2026-11-11T09:10:00.529Z",
       "rawTotal": 7,
       "rawPassed": 6,
       "rawRate": 85.71428571428571,
@@ -204,8 +204,8 @@
       "realPassed": 6,
       "realFailed": [],
       "effRate": 100,
-      "medianMs": 410,
-      "totalMs": 3117,
+      "medianMs": 296,
+      "totalMs": 2076,
       "warnings": []
     },
     {
@@ -252,7 +252,7 @@
       "origin": "self",
       "repo": "https://github.com/dcd887/dsh-office-qa",
       "testedOn": "DSH 0.2.1-alpha.2",
-      "ranAt": "2026-11-11T08:29:08.276Z",
+      "ranAt": "2026-11-11T09:10:01.510Z",
       "rawTotal": 3,
       "rawPassed": 2,
       "rawRate": 66.66666666666666,
@@ -261,8 +261,8 @@
       "realPassed": 2,
       "realFailed": [],
       "effRate": 100,
-      "medianMs": 415,
-      "totalMs": 1301,
+      "medianMs": 289,
+      "totalMs": 921,
       "warnings": []
     }
   ]
