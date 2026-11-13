@@ -28,9 +28,19 @@ export function entryOf(pluginDir) {
   const pkgPath = join(dir, 'package.json')
   if (!existsSync(pkgPath)) throw new Error(`package.json not found in ${dir}`)
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'))
-  const rel = pkg.main ?? pkg.exports?.['.'] ?? pkg.exports?.['.']?.default ?? 'index.js'
+  const raw = pkg.main ?? pkg.exports?.['.'] ?? 'index.js'
+  // exports 可能是 { ".": { types, default } } 这种带条件的形状
+  const rel = typeof raw === 'string' ? raw : (raw?.default ?? raw?.import ?? 'index.js')
   const entry = typeof rel === 'string' ? rel : 'index.js'
-  return { dir, pkg, entry: join(dir, entry) }
+  const entryPath = join(dir, entry)
+  if (!existsSync(entryPath)) {
+    throw new Error(
+      `入口文件不存在：${entryPath}\n` +
+        `  package.json 里 ${pkg.main ? 'main' : 'exports["."]'} 指向 "${entry}"，但这个文件没有。\n` +
+        `  常见原因：只提交了源码没 build，或 build 产物没跟着发布。`,
+    )
+  }
+  return { dir, pkg, entry: entryPath }
 }
 
 /**
@@ -207,7 +217,7 @@ export async function loadPlugin(pluginDir, config = {}, options = {}) {
     throw new Error(`plugin ${pkg.name} registered no tools (apply ran but ctx.tools.register was never called)`)
   }
 
-  return { name: module.name ?? pkg.name, tools, module, logs, dir, routes, commands, skills }
+  return { name: module.name ?? pkg.name, tools, module, logs, dir, routes, commands, skills, pkg, entry }
 }
 
 /**
