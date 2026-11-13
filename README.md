@@ -9,14 +9,35 @@ npx dsh-plugin-check ./node_modules/some-dsh-plugin
 ```
 
 ```
-插件  doc-read  1.0.0
-目录  .../node_modules/@local/dsh-doc-read
+doc-read  1.0.0
+Token-efficient document reader: outline / ranged read / grep for pdf, docx, xlsx, txt
 
-注册  工具 3 ｜ 命令 0 ｜ skill 0 ｜ 路由 0
-       doc_outline, doc_read, doc_grep
+✓ 可以用  加载正常，注册了 3 个工具
 
-✓ 没有发现问题
-合计  0 error ｜ 0 warning
+它能做什么
+  doc_outline  List a document's pages with a one-line preview of each, plus page count…
+  doc_read     Read a page range of a document as plain text, with page markers…
+  doc_grep     Find a keyword or regex inside a document and return only the matching…
+
+检查
+  ✓ 能 import，入口文件存在
+  ✓ apply 执行完没有抛错
+  ✓ 注册了 3 个工具
+  ✓ 没有阻断性问题
+  ✓ 没有需要注意的写法
+
+装进 DSH 就能用。想验证它做出来的东西对不对，用 dsh-runtime-eval 跑断言集。
+```
+
+出问题时不是丢一段报错给你，而是每条都说清三件事：
+
+```
+✗ 不能用
+
+1. 这是一个快捷方式（junction），但它指向的目录不存在：
+          C:\...\DSH输出\_plugins\browser-ops
+   后果  DSH 加载时会直接跳过它，而且不报错。你会以为装好了，实际一个工具都没有
+   怎么修  把插件放到新位置后重建链接（mklink /J），或者干脆把目录拷进 node_modules
 ```
 
 ## 它查什么
