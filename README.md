@@ -1,8 +1,76 @@
-# dsh-runtime-eval
+# dsh-plugin-check
 
-**官方测「装不装得上」，我测「用不用得好」。**
+**装上了不等于能用。** 在你信任一个 DSH 插件之前，它先回答三个问题：真的加载了吗、注册了什么、工具写得对不对。
 
-DSH 生态现有的兼容性检查停在「进程没死」那一级（dsh.so 的 L5 冒烟、dshmarketplace 的 install-tested）。`runtime-eval` 往下走一步：**给每个插件跑一组真实任务断言，看它做出来的东西对不对。**
+不需要写断言集——装完就能跑：
+
+```bash
+npx dsh-plugin-check ./node_modules/some-dsh-plugin
+```
+
+```
+插件  doc-read  1.0.0
+目录  .../node_modules/@local/dsh-doc-read
+
+注册  工具 3 ｜ 命令 0 ｜ skill 0 ｜ 路由 0
+       doc_outline, doc_read, doc_grep
+
+✓ 没有发现问题
+合计  0 error ｜ 0 warning
+```
+
+## 它查什么
+
+| # | 检查 | 为什么重要 |
+|---|---|---|
+| 1 | 能否 import、`apply` 会不会抛错 | 抛错的插件 DSH 会静默跳过，用户看不到原因 |
+| 2 | 注册了什么（工具 / 命令 / skill / 路由） | 「加载成功但 0 个工具」是最常见的假安装 |
+| 3 | 每个工具的 name / description / parameters | 模型只看得到 name 和 description，缺了就不会被选中 |
+| 4 | `required` 里的字段是否都在 `properties` 里 | 写错一个字段，模型一调用就崩 |
+| 5 | `apply` 期间有没有打 error 日志 | 有些插件不抛异常，只打日志，于是没人发现 |
+
+## 两个它当场抓到的真实问题
+
+不是编的示例，是在本机 16 个已装插件上跑出来的。
+
+**断链的 junction。** `browser-ops` 指向一个已经删掉的目录。`existsSync` 返回 false，DSH 静默跳过——看起来装了，实际不生效。
+
+```
+这是一个链接，但链接目标不存在：
+  链接  .../@local/browser-ops
+  指向  C:\...\DSH输出\_plugins\browser-ops
+DSH 会静默跳过这种插件——看起来装了，实际不生效。修法：重建链接，或直接放进 node_modules。
+```
+
+**入口文件不存在。** `dsh-feishu-mcp` 的 `package.json` 里 `exports["."]` 指向 `index.js`，但那个文件没有（只提交了源码、没 build）。
+
+```
+入口文件不存在：.../dsh-feishu-mcp/index.js
+  package.json 里 exports["."] 指向 "index.js"，但这个文件没有。
+  常见原因：只提交了源码没 build，或 build 产物没跟着发布。
+```
+
+## 选项与退出码
+
+| 选项 | 作用 |
+|---|---|
+| `--json` | 结构化输出，给 CI 用 |
+| `--config <file>` | 把 JSON 配置传给插件的 `apply` |
+| `--help` | 用法 |
+
+退出码：`0` 没有 error ｜ `1` 有 error ｜ `2` 用法错误。
+
+**WARN 不影响退出码**——它们是「能跑，但可能不讨模型喜欢」的建议，不是错误。
+
+## 进阶：跑真实任务断言
+
+体检只回答「结构对不对」。「它做出来的东西对不对」要断言集。同一个仓库里的 `dsh-runtime-eval` 做这件事：
+
+```bash
+npx dsh-runtime-eval my-assertions.json --plugin ./node_modules/some-plugin
+```
+
+断言集是 JSON：调哪个工具、传什么参数、期望返回什么。下面是 13 个断言集在 12 个真插件上的实测结果。
 
 ---
 
