@@ -1,13 +1,15 @@
 {
-  "name": "dsh-runtime-eval",
-  "version": "0.1.0",
-  "description": "Behaviour-level compatibility evaluator for DeepSeek Harness plugins: run real task assertions, not smoke tests.",
+  "name": "dsh-plugin-check",
+  "version": "0.2.0",
+  "description": "Check any DeepSeek Harness plugin before you trust it: does it load, what does it register, are its tools well-formed. Behaviour-level assertions optional.",
   "type": "module",
   "license": "MIT",
   "bin": {
+    "dsh-plugin-check": "src/check.mjs",
     "dsh-runtime-eval": "src/eval.mjs"
   },
   "scripts": {
+    "check": "node src/check.mjs",
     "eval": "node src/eval.mjs assertions/dsh-doc-read-real.json",
     "eval:mock": "node src/eval.mjs assertions/mock-doc-read.json",
     "eval:all": "node src/all.mjs",
