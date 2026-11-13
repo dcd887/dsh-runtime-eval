@@ -2,12 +2,8 @@
 /**
  * dsh-plugin-check · DSH 插件体检
  *
- * 不需要写断言集，直接对任意插件目录做一次基础检查：
- *   1. 能否 import、apply 会不会抛错
- *   2. 注册了什么（工具 / 命令 / skill / 路由）
- *   3. 每个工具的 name / description / parameters 是否完整
- *   4. apply 期间有没有打 error 日志
- *   5. 加载成功但什么都没注册（最常见的「装了等于没装」）
+ * 设计目标：让**没写过插件的人**看完就知道这个插件能不能用、为什么、怎么修。
+ * 所以每条问题都带三段：发生了什么 / 后果 / 怎么修。
  *
  * 用法：
  *   npx dsh-plugin-check <插件目录>
@@ -15,113 +11,129 @@
  *   npx dsh-plugin-check <插件目录> --config ./config.json
  *
  * 退出码：
- *   0  没有 ERROR（可能有 WARN）
- *   1  有 ERROR
- *   2  用法错误或插件目录不存在
+ *   0  没有 error（可能有 warn）
+ *   1  有 error
+ *   2  用法错误或目录不存在
  */
 
 import { resolve } from 'node:path'
 import { readFileSync, existsSync, lstatSync, readlinkSync } from 'node:fs'
 import { loadPlugin } from './adapter.mjs'
 
-const GREEN = process.stdout.isTTY ? '\x1b[32m' : ''
-const YELLOW = process.stdout.isTTY ? '\x1b[33m' : ''
-const RED = process.stdout.isTTY ? '\x1b[31m' : ''
-const DIM = process.stdout.isTTY ? '\x1b[2m' : ''
-const RESET = process.stdout.isTTY ? '\x1b[0m' : ''
+const on = process.stdout.isTTY
+const C = {
+  g: on ? '\x1b[32m' : '',
+  y: on ? '\x1b[33m' : '',
+  r: on ? '\x1b[31m' : '',
+  d: on ? '\x1b[2m' : '',
+  b: on ? '\x1b[1m' : '',
+  n: on ? '\x1b[0m' : '',
+}
 
-const USAGE = `${DIM}dsh-plugin-check · DSH 插件体检
+const USAGE = `${C.d}dsh-plugin-check · 检查一个 DSH 插件能不能用
 
-用法：
+用法
   dsh-plugin-check <插件目录> [选项]
 
-选项：
-  --json              以 JSON 输出（适合 CI 或后续处理）
-  --config <file>     传给插件的 config（JSON 文件）
+选项
+  --json              输出 JSON（给 CI 用）
+  --config <file>     把 JSON 配置传给插件的 apply
   --help              显示这段帮助
 
-退出码：
-  0  没有 ERROR      1  有 ERROR      2  用法错误`
+退出码
+  0 没问题    1 有问题    2 用法错误${C.n}`
 
-function fail(msg) {
-  console.error(`${RED}${msg}${RESET}`)
+function die(msg) {
+  console.error(`${C.r}${msg}${C.n}`)
   process.exit(2)
 }
 
-/** 工具的静态检查：返回 issue 列表 */
-function inspectTool(tool) {
-  const issues = []
-  const name = tool?.name
+const clip = (s, n) => {
+  const t = String(s ?? '').replace(/\s+/g, ' ').trim()
+  return t.length > n ? t.slice(0, n - 1) + '…' : t
+}
 
+/** 一条问题：发生了什么 / 后果 / 怎么修 */
+const issue = (level, code, what, impact, fix, tool) => ({ level, code, what, impact, fix, tool })
+
+/** 单个工具的静态检查 */
+function inspectTool(tool) {
+  const out = []
+  const name = tool?.name
   if (!name || typeof name !== 'string') {
-    issues.push({ level: 'ERROR', code: 'tool-no-name', detail: '工具没有 name' })
-    return issues
+    out.push(
+      issue('ERROR', 'tool-no-name', '有一个工具没有 name', 'DSH 无法注册它，模型也调不到它', '给 tools.register 的对象加 name 字段'),
+    )
+    return out
   }
-  if (!/^[a-z][a-z0-9_]*$/.test(name)) {
-    issues.push({
-      level: 'WARN',
-      code: 'tool-name-style',
-      tool: name,
-      detail: `工具名 "${name}" 不是小写+下划线；模型按名字选工具，风格不统一会增加误选`,
-    })
+
+  if (typeof tool.execute !== 'function') {
+    out.push(
+      issue('ERROR', 'tool-no-execute', `工具 ${name} 没有 execute 函数`, '它会被列在工具表里，但一调用就崩', '补上 execute(args) 的实现', name),
+    )
   }
+
   const desc = tool.description
   if (!desc || String(desc).trim() === '') {
-    issues.push({
-      level: 'WARN',
-      code: 'tool-no-description',
-      tool: name,
-      detail: '没有 description；模型只看得到 name 和 description，缺了它基本不会被选中',
-    })
-  } else if (String(desc).length < 15) {
-    issues.push({
-      level: 'WARN',
-      code: 'tool-short-description',
-      tool: name,
-      detail: `description 只有 ${String(desc).length} 字，可能不足以让模型判断何时使用`,
-    })
+    out.push(
+      issue(
+        'WARN',
+        'tool-no-description',
+        `工具 ${name} 没有 description`,
+        '模型选工具时只看得到 name 和 description。没描述，它基本不会被选中——工具等于白注册',
+        '加一句「什么时候用它、它返回什么」，比如 "Read a page range from a PDF and return its text"',
+        name,
+      ),
+    )
+  } else if (String(desc).trim().length < 15) {
+    out.push(
+      issue(
+        'WARN',
+        'tool-short-description',
+        `工具 ${name} 的 description 只有 ${String(desc).trim().length} 个字`,
+        '太短了，模型很难判断该在什么场景用它',
+        '写清输入是什么、输出是什么',
+        name,
+      ),
+    )
   }
+
   const params = tool.parameters
   if (params !== undefined && (typeof params !== 'object' || Array.isArray(params))) {
-    issues.push({
-      level: 'ERROR',
-      code: 'tool-bad-parameters',
-      tool: name,
-      detail: 'parameters 不是对象；应当是 JSON Schema',
-    })
-  }
-  if (params && typeof params === 'object') {
+    out.push(
+      issue('ERROR', 'tool-bad-parameters', `工具 ${name} 的 parameters 不是对象`, '模型按 JSON Schema 传参，schema 不合法会导致调用失败', '把 parameters 写成 { type: "object", properties: {...} }', name),
+    )
+  } else if (params && typeof params === 'object') {
     if (params.type && params.type !== 'object') {
-      issues.push({
-        level: 'WARN',
-        code: 'tool-parameters-type',
-        tool: name,
-        detail: `parameters.type 是 "${params.type}"，工具参数通常是 "object"`,
-      })
+      out.push(
+        issue('WARN', 'tool-parameters-type', `工具 ${name} 的 parameters.type 是 "${params.type}"`, '工具参数通常是 object；类型不对会让模型传错形状', '改成 "object"', name),
+      )
     }
-    if (params.type === 'object' && params.properties) {
-      const required = Array.isArray(params.required) ? params.required : []
-      for (const key of required) {
-        if (!params.properties[key]) {
-          issues.push({
-            level: 'ERROR',
-            code: 'tool-required-unknown',
-            tool: name,
-            detail: `required 里有 "${key}"，但 properties 里没有这个字段`,
-          })
+    if (params.type === 'object' && Array.isArray(params.required)) {
+      for (const key of params.required) {
+        if (!params.properties?.[key]) {
+          out.push(
+            issue(
+              'ERROR',
+              'tool-required-unknown',
+              `工具 ${name} 把 "${key}" 列进了 required，但 properties 里没有这个字段`,
+              '模型调用时一定过不了参数校验，这个工具永远调不通',
+              `要么在 properties 里补 "${key}"，要么把它从 required 里删掉`,
+              name,
+            ),
+          )
         }
       }
     }
   }
-  if (typeof tool.execute !== 'function') {
-    issues.push({
-      level: 'ERROR',
-      code: 'tool-no-execute',
-      tool: name,
-      detail: '没有 execute 函数，调用了会崩',
-    })
+
+  if (!/^[a-z][a-z0-9_]*$/.test(name)) {
+    out.push(
+      issue('WARN', 'tool-name-style', `工具名 "${name}" 不是小写加下划线`, '不影响运行，但模型在多个工具之间选择时，命名风格不统一会增加误选', '改成小写 + 下划线，如 doc_read', name),
+    )
   }
-  return issues
+
+  return out
 }
 
 async function main() {
@@ -136,88 +148,104 @@ async function main() {
   const positional = []
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]
-    if (a === '--json') {
-      jsonOut = true
-      continue
-    }
+    if (a === '--json') { jsonOut = true; continue }
     if (a === '--config') {
       const f = argv[++i]
-      if (!f) fail('--config 后面要跟一个 JSON 文件')
-      try {
-        config = JSON.parse(readFileSync(f, 'utf8'))
-      } catch (e) {
-        fail(`读不了 config：${e.message}`)
-      }
+      if (!f) die('--config 后面要跟一个 JSON 文件')
+      try { config = JSON.parse(readFileSync(f, 'utf8')) } catch (e) { die(`读不了 config：${e.message}`) }
       continue
     }
-    if (a.startsWith('-')) fail(`不认识的选项：${a}`)
+    if (a.startsWith('-')) die(`不认识的选项：${a}`)
     positional.push(a)
   }
+  if (positional.length === 0) die('缺插件目录。用法：dsh-plugin-check <插件目录>')
 
-  if (positional.length === 0) fail('缺插件目录。用法：dsh-plugin-check <插件目录>')
   const pluginDir = resolve(positional[0])
+
+  /* ---------- 目录级：先说清楚「装没装上」 ---------- */
   if (!existsSync(pluginDir)) {
-    // existsSync 会跟随链接：目标不存在的 junction 也返回 false。
-    // 这两种情况对插件安装来说是同一个后果，但原因不同，分开报。
-    let isLink = false
-    let target = null
+    let linkTarget = null
     try {
-      const st = lstatSync(pluginDir)
-      isLink = st.isSymbolicLink()
-      if (isLink) target = readlinkSync(pluginDir)
-    } catch {
-      /* 路径真的不存在 */
+      if (lstatSync(pluginDir).isSymbolicLink()) linkTarget = readlinkSync(pluginDir)
+    } catch { /* 路径真的不存在 */ }
+
+    if (linkTarget) {
+      const report = {
+        plugin: { dir: pluginDir, name: null, version: null, description: null },
+        verdict: 'unusable',
+        registered: { tools: [], commands: [], skills: [], routes: 0 },
+        issues: [
+          issue(
+            'ERROR',
+            'broken-link',
+            `这是一个快捷方式（junction），但它指向的目录不存在：\n            ${linkTarget}`,
+            'DSH 加载时会直接跳过它，而且不报错。你会以为装好了，实际一个工具都没有',
+            '把插件放到新位置后重建链接（mklink /J），或者干脆把目录拷进 node_modules，不用链接',
+          ),
+        ],
+        summary: { errors: 1, warnings: 0 },
+      }
+      if (jsonOut) { console.log(JSON.stringify(report, null, 2)); process.exit(1) }
+      renderHeader(report)
+      renderVerdict(report)
+      renderIssues(report.issues)
+      renderNext(report, 1, 0)
+      process.exit(1)
     }
-    if (isLink) {
-      fail(
-        `这是一个链接，但链接目标不存在：\n  链接  ${pluginDir}\n  指向  ${target}\n` +
-          `DSH 会静默跳过这种插件——看起来装了，实际不生效。修法：重建链接，或直接放进 node_modules。`,
-      )
-    }
-    fail(`目录不存在：${pluginDir}`)
+    die(`目录不存在：${pluginDir}`)
   }
 
+  /* ---------- 加载 ---------- */
   const issues = []
   let loaded = null
-
   try {
     loaded = await loadPlugin(pluginDir, config, {})
   } catch (e) {
-    issues.push({
-      level: 'ERROR',
-      code: 'load-failed',
-      detail: `插件加载失败：${e.message}`,
-    })
+    const msg = String(e?.message ?? e)
+    const isEntry = msg.includes('入口文件不存在')
+    issues.push(
+      issue(
+        'ERROR',
+        isEntry ? 'entry-missing' : 'load-failed',
+        isEntry ? msg.split('\n')[0] : `插件加载失败：${msg.split('\n')[0]}`,
+        '这个插件永远不会被 DSH 加载，装了等于没装',
+        isEntry
+          ? '先 build 出入口文件，或把 build 产物一起提交；确认 package.json 的 main / exports 指向真实存在的文件'
+          : '按上面的报错修；常见原因是依赖没装（先 npm install）、语法错误、或入口路径不对',
+      ),
+    )
   }
 
+  /* ---------- 注册面 ---------- */
+  const tools = loaded ? [...loaded.tools.values()] : []
   if (loaded) {
-    const tools = [...loaded.tools.values()]
     for (const t of tools) issues.push(...inspectTool(t))
 
-    // apply 期间的 error 日志
-    for (const entry of loaded.logs ?? []) {
-      if (String(entry?.level).toLowerCase() === 'error') {
-        issues.push({
-          level: 'WARN',
-          code: 'error-logged',
-          detail: `apply 期间打了 error：${String(entry.msg ?? entry.message ?? '').slice(0, 160)}`,
-        })
+    for (const log of loaded.logs ?? []) {
+      if (String(log?.level).toLowerCase() === 'error') {
+        issues.push(
+          issue(
+            'WARN',
+            'error-logged',
+            `apply 期间打了 error 日志：${clip(log.msg ?? log.message ?? '', 140)}`,
+            '有些插件出错不抛异常、只打日志。表面上一切正常，实际某个功能已经失效',
+            '看这条日志指向哪一步，补齐依赖或修掉那个分支',
+          ),
+        )
       }
     }
 
-    const surfaces =
-      (loaded.tools?.size ?? 0) +
-      (loaded.commands?.length ?? 0) +
-      (loaded.skills?.length ?? 0) +
-      (loaded.routes?.length ?? 0)
+    const surfaces = (loaded.tools?.size ?? 0) + (loaded.commands?.length ?? 0) + (loaded.skills?.length ?? 0) + (loaded.routes?.length ?? 0)
     if (surfaces === 0) {
-      issues.push({
-        level: 'ERROR',
-        code: 'nothing-registered',
-        detail:
-          '加载成功但什么都没注册（没有工具、命令、skill、路由）。常见原因：' +
-          '依赖的服务不在 mock ctx 里、apply 里有条件分支没走到、或者这是个纯 UI 插件',
-      })
+      issues.push(
+        issue(
+          'ERROR',
+          'nothing-registered',
+          '加载成功了，但它什么都没注册（没有工具、命令、skill、路由）',
+          'DSH 里看不到任何新功能。这是「装上了」和「能用」之间最常见的一道坎',
+          '如果是纯 UI 插件，这条可以忽略；否则检查 apply 里的条件分支——通常是它依赖的服务（如 ctx.web.fetch）不在环境里，注册被静默跳过',
+        ),
+      )
     }
   }
 
@@ -228,14 +256,15 @@ async function main() {
     plugin: {
       dir: pluginDir,
       name: loaded?.name ?? null,
-      pkg: loaded?.pkg?.name ?? null,
       version: loaded?.pkg?.version ?? null,
+      description: loaded?.pkg?.description ?? null,
       entry: loaded?.entry ?? null,
     },
+    verdict: errors.length ? 'unusable' : warns.length ? 'usable-with-warnings' : 'usable',
     registered: {
-      tools: loaded ? [...loaded.tools.keys()] : [],
-      commands: (loaded?.commands ?? []).map((c) => c?.name),
-      skills: (loaded?.skills ?? []).map((s) => s?.name),
+      tools: tools.map((t) => ({ name: t.name, description: clip(t.description ?? '', 76) })),
+      commands: (loaded?.commands ?? []).map((c) => c?.name).filter(Boolean),
+      skills: (loaded?.skills ?? []).map((s) => s?.name).filter(Boolean),
       routes: (loaded?.routes ?? []).length,
     },
     issues,
@@ -244,46 +273,105 @@ async function main() {
 
   if (jsonOut) {
     console.log(JSON.stringify(report, null, 2))
-    process.exit(errors.length > 0 ? 1 : 0)
+    process.exit(errors.length ? 1 : 0)
   }
 
-  // 人类可读
-  console.log('')
-  console.log(`${DIM}插件${RESET}  ${report.plugin.name ?? '(未知)'}  ${DIM}${report.plugin.version ?? ''}${RESET}`)
-  console.log(`${DIM}目录${RESET}  ${pluginDir}`)
-  console.log('')
-  console.log(
-    `${DIM}注册${RESET}  工具 ${report.registered.tools.length} ｜ 命令 ${report.registered.commands.length} ｜ skill ${report.registered.skills.length} ｜ 路由 ${report.registered.routes}`,
-  )
-  if (report.registered.tools.length) {
-    console.log(`${DIM}     ${RESET}${report.registered.tools.join(', ')}`)
-  }
-  console.log('')
+  renderHeader(report)
+  renderVerdict(report)
+  renderTools(report)
+  renderChecks(report)
+  renderIssues(issues)
+  renderNext(report, errors.length, warns.length)
 
-  if (issues.length === 0) {
-    console.log(`${GREEN}✓ 没有发现问题${RESET}`)
+  process.exit(errors.length ? 1 : 0)
+}
+
+/* ------------------------------ 渲染 ------------------------------ */
+
+function renderHeader(r) {
+  const name = r.plugin.name ?? '（读不到名字）'
+  console.log('')
+  console.log(`  ${C.b}${name}${C.n}${r.plugin.version ? `  ${C.d}${r.plugin.version}${C.n}` : ''}`)
+  if (r.plugin.description) console.log(`  ${C.d}${clip(r.plugin.description, 100)}${C.n}`)
+  console.log(`  ${C.d}${r.plugin.dir}${C.n}`)
+  console.log('')
+}
+
+function renderVerdict(r) {
+  if (r.verdict === 'usable') {
+    console.log(`  ${C.g}✓ 可以用${C.n}  ${C.d}加载正常，注册了 ${r.registered.tools.length} 个工具${C.n}`)
+  } else if (r.verdict === 'usable-with-warnings') {
+    console.log(`  ${C.y}! 能用，但有 ${r.summary.warnings} 处可以改进${C.n}`)
   } else {
-    for (const i of issues) {
-      const mark = i.level === 'ERROR' ? `${RED}✗ ERROR${RESET}` : `${YELLOW}! WARN ${RESET}`
-      const where = i.tool ? ` [${i.tool}]` : ''
-      console.log(`${mark}${where}  ${i.code}`)
-      console.log(`         ${i.detail}`)
-    }
-    console.log('')
-  }
-
-  console.log(
-    `${DIM}合计${RESET}  ${errors.length ? RED : ''}${errors.length} error${RESET} ｜ ${warns.length ? YELLOW : ''}${warns.length} warning${RESET}`,
-  )
-  if (errors.length === 0 && warns.length > 0) {
-    console.log(`${DIM}WARN 不影响退出码；想一次跑真实任务断言，用 dsh-runtime-eval <断言集>${RESET}`)
+    console.log(`  ${C.r}✗ 不能用${C.n}`)
   }
   console.log('')
+}
 
-  process.exit(errors.length > 0 ? 1 : 0)
+function renderTools(r) {
+  const { tools } = r.registered
+  if (!tools.length) return
+  console.log(`  ${C.d}它能做什么${C.n}`)
+  const width = Math.min(22, Math.max(...tools.map((t) => t.name.length)) + 2)
+  for (const t of tools) {
+    console.log(`    ${C.b}${t.name.padEnd(width)}${C.n}${C.d}${t.description || '（没有描述，模型基本不会选它）'}${C.n}`)
+  }
+  const extra = []
+  if (r.registered.commands.length) extra.push(`${r.registered.commands.length} 个命令`)
+  if (r.registered.skills.length) extra.push(`${r.registered.skills.length} 个 skill`)
+  if (r.registered.routes) extra.push(`${r.registered.routes} 条路由`)
+  if (extra.length) console.log(`    ${C.d}另外注册了 ${extra.join('、')}${C.n}`)
+  console.log('')
+}
+
+function renderChecks(r) {
+  const e = r.summary.errors
+  const w = r.summary.warnings
+  const loaded = Boolean(r.plugin.entry) && Boolean(r.plugin.name)
+  console.log(`  ${C.d}检查${C.n}`)
+  const line = (ok, text) => console.log(`    ${ok ? `${C.g}✓${C.n}` : `${C.r}✗${C.n}`} ${text}`)
+  line(Boolean(r.plugin.entry), r.plugin.entry ? '能 import，入口文件存在' : '入口文件不存在，插件加载不了')
+  line(loaded, loaded ? 'apply 执行完没有抛错' : 'apply 没能执行')
+  line(r.registered.tools.length > 0, `注册了 ${r.registered.tools.length} 个工具`)
+  line(e === 0, e === 0 ? '没有阻断性问题' : `${e} 个会直接影响使用的问题`)
+  if (w > 0) console.log(`    ${C.y}!${C.n} ${w} 处可以改进的写法（不阻断使用）`)
+  else console.log(`    ${C.g}✓${C.n} 没有需要注意的写法`)
+  console.log('')
+}
+
+function renderIssues(issues) {
+  if (!issues.length) return
+  issues.forEach((i, idx) => {
+    const isErr = i.level === 'ERROR'
+    const head = isErr ? `${C.r}${idx + 1}. ${i.what}${C.n}` : `${C.y}${idx + 1}. ${i.what}${C.n}`
+    console.log(`  ${head}`)
+    if (i.impact) console.log(`     ${C.d}后果${C.n}  ${i.impact}`)
+    if (i.fix) console.log(`     ${C.d}怎么修${C.n}  ${i.fix}`)
+    console.log('')
+  })
+}
+
+function renderNext(r, errors, warns) {
+  if (errors) {
+    console.log(`  ${C.d}修完上面 ${errors} 条再看一次：${C.n}dsh-plugin-check ${r.plugin.dir}`)
+  } else if (warns) {
+    console.log(`  ${C.d}这些是建议，不影响使用。想让插件更容易被模型选中，按「怎么修」改一遍。${C.n}`)
+  } else {
+    console.log(`  ${C.d}装进 DSH 就能用。想验证它做出来的东西对不对，用 dsh-runtime-eval 跑断言集。${C.n}`)
+  }
+  console.log('')
+}
+
+function errorsWord(n) {
+  return `${n} 个问题`
+}
+
+function renderFooter(report, note) {
+  console.log(`  ${C.d}${note}${C.n}`)
+  console.log('')
 }
 
 main().catch((e) => {
-  console.error(`${RED}未捕获错误${RESET}：${e?.stack ?? e}`)
+  console.error(`${C.r}未捕获错误${C.n}：${e?.stack ?? e}`)
   process.exit(2)
 })
